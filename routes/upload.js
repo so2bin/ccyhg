@@ -19,7 +19,8 @@ router.get('/', function(req, res) {
 });
 
 router.post('/',function (req, res) {
-    
+    console.log(req.body)
+    res.end('服务器处理成功');
 });
 
 module.exports = router;

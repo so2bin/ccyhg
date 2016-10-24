@@ -54,7 +54,46 @@ $(function () {
                 });
             }
         })
-    }
+    };
 
+    $('.submitButton input[type=submit]').button();
+
+    $('#formSubmit').click(function () {
+        $('form').ajaxSubmit({
+            url: '/upload',
+            type: 'POST',
+            //data: $('form').serialize(),
+            clearForm: false,
+            resetForm: false,
+            beforeSubmit: function (formDataa, jqForm, options) {
+                $('#loading').dialog('open');
+                return true;
+            },
+            success : function (responseText, statusText) {
+                if(responseText){
+                    $('#loading').css('color','green').html('数据提交成功...');
+                    setTimeout(function(){
+                        $('#loading').dialog('close');
+                    },1000)
+                }
+            },
+            error : function (event, errorText, errorType) { //错误时调用
+                $('#loading').css('color','red').html('数据提交出错!');
+                setTimeout(function(){
+                    $('#loading').dialog('close');
+                },1000)
+            }
+        });
+    });
+
+    $('#loading').dialog({
+        modal : true,
+        autoOpen : false,
+        closeOnEscape : false, //按下 esc 无效
+        resizable : false,
+        draggable : false,
+        width : 200,
+        height: 50
+    }).parent().parent().find('.ui-widget-header').hide();
 });
 
