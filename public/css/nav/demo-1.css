@@ -64,8 +64,8 @@ div.good-info{
 }
 
 .good-info .good-img{
-	width:100px;
-	height:100px;
+	/*width: 100px;*/
+	height: 100%; /*100px;*/
 	margin:0 0px;
 	display: inline;
 }
@@ -73,7 +73,7 @@ div.good-info{
 .good-caption{
 	display:inline;
 	float: right;
-	width:250px;
+	width:200px;
 	height:100px;
 	right: 0px;
 }

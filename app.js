@@ -10,6 +10,7 @@ var users = require('./routes/users');
 var wechat = require('./routes/wechat');
 var mobile = require('./routes/mobile');
 var upload = require('./routes/upload');
+var info = require('./routes/info');
 
 var app = express();
 
@@ -33,6 +34,7 @@ app.use('/wechat',wechat);
 app.use('/users', users);
 app.use('/mobile',mobile);
 app.use('/upload',upload);
+app.use('/info',info);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
