@@ -1,0 +1,14 @@
+
+<div class="goods-lists row col-md-3 col-sm-6 col-xs-12">
+    <% items.forEach(function(item, index){ %>
+    <div class="good-info thumbnail">
+        <img class="good-img img-rounded" src="images/1.jpg" alt="">
+        <div class="good-caption">
+            <span><%- item.title%></span>
+            <span>优惠价格:<%- item.coupons%>></span>
+            <span>优惠后价格:<%- item.realPrice%>></span>
+            <span><a href="#" class="btn btn-default">详情</a></span>
+        </div>
+    </div>
+    <% }) %>
+</div>

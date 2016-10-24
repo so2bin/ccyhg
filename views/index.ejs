@@ -1,0 +1,32 @@
+<%- include header1.ejs%>
+
+<div class="wrapper">
+    <div class="menu">
+        <img id="menu-bg" src="" />
+        <ul>
+            <li class="active"><a href="#">最新推荐</a></li>
+            <li><a href="#">男装</a></li>
+            <li><a href="#">女装</a></li>
+            <li><a href="#">化妆品</a></li>
+            <li><a href="#">其它</a></li>
+        </ul>
+    </div>
+
+    <div class="screen">
+        <div class="navbar"></div>
+        <div class="burger">
+            <div class="x"></div>
+            <div class="y"></div>
+            <div class="z"></div>
+        </div>
+
+        <div class="list-container">
+            <div class="goods-container">
+                <%- include goodinfo.ejs %>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<%- include footer.ejs%>

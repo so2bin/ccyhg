@@ -1,0 +1,67 @@
+<%- include header1.ejs%>
+
+<link rel="stylesheet" type="text/css" href="css/upload/upload.css">
+<!-- 引用图片上传控制层插件样式 -->
+<link rel="stylesheet" href="pic-upload/control/css/zyUpload.css" type="text/css">
+
+<h1 class="title">
+    物品上传系统
+</h1>
+
+<div id="keySel">
+    <label for="mainKey">主类</label><span class="must-star">*</span>
+    <select name="mainKey" id="mainKey"></select>
+    <label for="subKey1">子类1</label>
+    <select name="subKey1" id="subKey1"></select>
+    <label for="subKey2">子类2</label>
+    <select name="subKey2" id="subKey2"></select>
+</div>
+
+<div id="goodstitle">
+    商品描述信息：<span class="must-star">*</span>
+    <br/>
+    <textarea></textarea>
+</div>
+<div class="description">
+    <div id="step1">
+        购买步骤1：<span class="must-star">*</span>
+        <br/>
+        <textarea></textarea>
+    </div>
+    <div id="step2">
+        购买步骤2：
+        <br/>
+        <textarea></textarea>
+    </div>
+</div>
+
+<div id="price">
+    <div id="realPrice" class="price">
+        劵后价格：<span class="must-star">*</span>
+        <input type="text">
+        元
+    </div>
+
+    <div id="coupon" class="price">
+        优惠价格：<span class="must-star">*</span>
+        <input type="text">
+        元
+    </div>
+</div>
+
+<div>
+    上传展示图片(最多3张):
+    <div id="picUpload"></div>
+</div>
+
+
+
+<%- include footer.ejs%>
+
+<script src="/js/upload/upload.js"></script>
+<!-- 引用核心层插件 -->
+<script src="pic-upload/core/zyFile.js"></script>
+<!-- 引用控制层插件 -->
+<script src="pic-upload/control/js/zyUpload.js"></script>
+<!-- 引用初始化JS -->
+<script src="pic-upload/core/picUpInit.js"></script>

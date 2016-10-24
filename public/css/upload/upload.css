@@ -1,0 +1,54 @@
+body{
+    padding: 20px 40px;
+    font-size: 14px;
+}
+label { display: inline-block; }
+select {
+    width: 100px;
+    margin: 0 10px 0 50px ;
+}
+
+div input{
+    line-height: 26px;
+}
+
+textarea{
+    margin-top: 5px;
+}
+
+.title{
+    text-align: center;
+    margin:0 0 30px 0;
+}
+
+#goodstitle{
+    padding: 10px 0;
+}
+
+#goodstitle textarea{
+    width: 400px;
+    height:100px;
+}
+
+.must-star{
+    color: red;
+    font-size: 15px;
+}
+
+.description textarea{
+    width: 400px;
+    height:50px;
+}
+
+#realPrice{
+    padding: 20px 0;
+}
+
+#realPrice input, #coupon input{
+    width:50px;
+}
+
+.price{
+    display: inline-block;
+    margin-right: 50px;
+}
