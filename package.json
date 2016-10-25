@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "body-parser": "~1.15.1",
+    "bluebird": "^2.9.34",
     "cookie-parser": "~1.4.3",
     "crypto": "0.0.3",
     "debug": "~2.2.0",

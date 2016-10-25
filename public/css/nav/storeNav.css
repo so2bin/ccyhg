@@ -1,0 +1,42 @@
+/*导航条*/
+div.navbar{
+    height:36px;
+    width: 100%;
+    margin-bottom: 0px;
+    background:#eee;
+    position: fixed;
+    z-index: 999;
+}
+
+.navbar ul{
+    padding:0;
+    margin:0;
+    list-style-type: none;
+    text-align: left;
+    overflow:hidden;
+}
+
+.navbar ul a{
+    float: left;
+    display: inline;
+    line-height:36px;
+    font-size: 22px;
+    padding:0 40px;
+}
+
+.navbar a{
+    color: #2fa8ec;
+    height: 36px;
+}
+
+.navbar  a:link,
+.navbar  a:visited{
+    text-decoration:none;
+    color: #2fa8ec;
+}
+
+.navbar a:focus{
+    background-color: #2fa8ec;
+    color: #fcf8e3;
+    border-radius: 4px;
+}

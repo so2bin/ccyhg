@@ -1,0 +1,15 @@
+body{
+    padding: 0px 0px;
+    font-size: 14px;
+    margin: 0px auto;
+    text-align: center;
+}
+
+#content{
+    padding-top:40px;
+}
+
+.title{
+    text-align: center;
+    margin:0 0 00px 0;
+}

@@ -10,7 +10,7 @@ var config = require('../config.js');
 var menu = require('../wechat/wechat-menu.json');
 var msg = require('../wechat/msg.json')
 var text = require('../controller/dealText')
-var db = require('../db/mysql')
+var db = require('../db/index');
 
 var api = new API(config.hbb.config.appid, config.hbb.secret);
 

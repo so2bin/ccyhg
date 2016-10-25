@@ -4,65 +4,70 @@
 <!-- 引用图片上传控制层插件样式 -->
 <link rel="stylesheet" href="pic-upload/control/css/zyUpload.css" type="text/css">
 
-<h1 class="title">
-    物品上传系统
-</h1>
+<%- include storeNav.ejs%>
 
-<form action="">
-    <div id="keySel">
-        <label for="mainKey">主类</label><span class="must-star">*</span>
-        <select name="mainKey" id="mainKey"></select>
-        <br/>
-        <label for="subKey1">子类1</label>
-        <select name="subKey1" id="subKey1"></select>
-        <br/>
-        <label for="subKey2">子类2</label>
-        <select name="subKey2" id="subKey2"></select>
-    </div>
+<div id="content">
+    <h1 class="title">
+        物品上传系统
+    </h1>
 
-    <div id="goodstitle">
-        商品描述信息：<span class="must-star">*</span>
-        <br/>
-        <textarea name="goodstitle"></textarea>
-    </div>
-    <div class="description">
-        <div id="step1">
-            购买步骤1：<span class="must-star">*</span>
+    <form action="">
+        <div id="keySel">
+            <label for="mainKey">主类</label><span class="must-star">*</span>
+            <select name="mainKey" id="mainKey"></select>
             <br/>
-            <textarea name="step1"></textarea>
-        </div>
-        <div id="step2">
-            购买步骤2：
+            <label for="subKey1">子类1</label>
+            <select name="subKey1" id="subKey1"></select>
             <br/>
-            <textarea name="step2"></textarea>
+            <label for="subKey2">子类2</label>
+            <select name="subKey2" id="subKey2"></select>
         </div>
+
+        <div id="goodstitle">
+            商品描述信息：<span class="must-star">*</span>
+            <br/>
+            <textarea name="goodstitle"></textarea>
+        </div>
+        <div class="description">
+            <div id="step1">
+                购买步骤1：<span class="must-star">*</span>
+                <br/>
+                <textarea name="step1"></textarea>
+            </div>
+            <div id="step2">
+                购买步骤2：
+                <br/>
+                <textarea name="step2"></textarea>
+            </div>
+        </div>
+
+        <div id="price">
+            <div id="realPrice" class="price">
+                劵后价格：<span class="must-star">*</span>
+                <input type="text" name="realPrice">
+                元
+            </div>
+
+            <div id="coupon" class="price">
+                优惠价格：<span class="must-star">*</span>
+                <input type="text" name="coupon">
+                元
+            </div>
+        </div>
+    </form>
+
+    <div id="picDiv">
+        上传展示图片(最多3张):
+        <div id="picUpload"></div>
     </div>
 
-    <div id="price">
-        <div id="realPrice" class="price">
-            劵后价格：<span class="must-star">*</span>
-            <input type="text" name="realPrice">
-            元
-        </div>
-
-        <div id="coupon" class="price">
-            优惠价格：<span class="must-star">*</span>
-            <input type="text" name="coupon">
-            元
-        </div>
+    <div class="submitButton">
+        <input type="submit" value="提交"  id="formSubmit">
     </div>
-</form>
 
-<div id="picDiv">
-    上传展示图片(最多3张):
-    <div id="picUpload"></div>
+    <div id="loading">数据正在交互之中...</div>
 </div>
 
-<div class="submitButton">
-    <input type="submit" value="提交"  id="formSubmit">
-</div>
-
-<div id="loading">数据正在交互之中...</div>
 
 <%- include footer.ejs%>
 

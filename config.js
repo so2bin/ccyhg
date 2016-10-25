@@ -31,11 +31,13 @@ module.exports = {
         user : "l0wjz0o22y",
         "password" : "45l4jlw4x4m5mllwxxl31jk2ymi2iikk15j55khw"
     },
+    // ubuntu duoyi
     mysql_local : {
         host : "localhost",
         port : 3306,
-        database : "db_hbb",
+        database : "ccyhg",
         user : "hbb",
-        "password" : ""
+        password : "mysqlhbb123456",
+        maxConnections: 20
     }
 };

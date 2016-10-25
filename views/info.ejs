@@ -1,10 +1,19 @@
 <%- include header1.ejs%>
-<link rel="stylesheet" type="text/css" href="DataTables/datatables.min.css"/>
+<link rel="stylesheet" type="text/css" href="datatables/datatables.min.css"/>
+<link rel="stylesheet" type="text/css" href="css/upload/info.css">
 
-<table id="table_id" class="display"></table>
+<%- include storeNav.ejs%>
+
+<div id="content">
+    <h1 class="title">
+        物品查询系统
+    </h1>
+
+    <table id="table_id" class="display"></table>
+</div>
 
 
 <%- include footer.ejs%>
 
-<script type="text/javascript" src="DataTables/datatables.min.js"></script>
+<script type="text/javascript" src="datatables/datatables.min.js"></script>
 <script type="text/javascript" src="js/upload/info.js"></script>
