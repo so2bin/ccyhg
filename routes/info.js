@@ -1,15 +1,21 @@
 /**
  * Created by heli on 2016/10/24 0024.
  */
-var express       = require('express');
-var router        = express.Router();
-var path          = require('path');
-var BBPromise     = require('bluebird');
-var selectContent = require('../config/selectConfig.js')
-var dbStore       = require('../db/index');
+const express       = require('express');
+const router        = express.Router();
+const path          = require('path');
+const BBPromise     = require('bluebird');
+const selectContent = require('../config/selectConfig.js')
+const dbStore       = require('../db/index');
 
 /* GET goods info in tbl_store */
 router.get('/', function (req, res) {
+  res.render('info',{
+    title: 'CC优惠购'
+  });
+});
+
+router.get('/listgoods', function (req, res) {
   var tblName = 'tbl_store';
   var sqlData = `SELECT * FROM ${tblName} ORDER BY ftime`;
 
@@ -18,12 +24,10 @@ router.get('/', function (req, res) {
       type: dbStore.sequelize.QueryTypes.SELECT
     })
   ]).spread(function (sqlItems) {
-    console.log(sqlItems);
-
-    res.render('info', {
-      title: 'CC优惠购',
-      msg  : sqlItems
+    let result = JSON.stringify({
+      msg: sqlItems
     });
+    res.end(result);
   }).catch(function (err) {
     console.log(err);
     res.end('ERROR' + err)

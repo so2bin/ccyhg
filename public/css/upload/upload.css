@@ -1,100 +1,102 @@
-body{
+body {
     padding: 0 0px 10px 0;
     font-size: 14px;
     margin: 0px auto;
     text-align: center;
 }
+
 label {
     display: inline-block;
     padding-top: 15px;
 }
+
 select {
     width: 100px;
-    margin: 0 10px 0 50px ;
+    margin: 0 10px 0 50px;
 }
 
-div input{
+div input {
     line-height: 26px;
 }
 
-textarea{
+textarea {
     margin-top: 5px;
 }
 
 input, textarea {
-    -moz-border-radius:6px;
-    -webkit-border-radius:6px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
     background-color: #efefef;
 }
 
-input:focus, textarea:focus{
+input:focus, textarea:focus {
     border: solid 2px orange;
 }
 
-#content{
-    padding-top:40px;
+#content {
+    padding-top: 40px;
 }
 
-.title{
+.title {
     position: fixed;
     float: left;
-    width:30px;
+    width: 30px;
     padding: 0px 30px;
-    margin:0 0 0 30px;
+    margin: 0 0 0 30px;
     background-color: #eeeeee;
-    color:#c5c5c5;
+    color: #c5c5c5;
 }
 
-#goodstitle{
+#goodstitle {
     padding: 10px 0;
 }
 
-#goodstitle textarea{
+#goodstitle textarea {
     width: 400px;
-    height:100px;
+    height: 100px;
 }
 
-.must-star{
+.must-star {
     color: red;
     font-size: 15px;
 }
 
-.description textarea{
+.description textarea {
     width: 400px;
-    height:50px;
+    height: 50px;
 }
 
-#realPrice{
+#realPrice {
     padding: 20px 0;
 }
 
-#realPrice input, #coupon input{
-    width:50px;
+#realPrice input, #coupon input {
+    width: 50px;
 }
 
-.price{
+.price {
     display: inline-block;
     margin-right: 30px;
 }
 
-#picDiv{
+#picDiv {
     display: inline-block;
 }
 
-.submitButton{
-    margin-top:20px;
-    margin-left:300px;
+.submitButton {
+    margin-top: 20px;
+    margin-left: 300px;
 }
 
-.submitButton input{
+.submitButton input {
     width: 100px;
-    height:40px;
+    height: 40px;
 }
 
 #loading {
-    line-height:25px;
-    font-size:14px;
-    font-weight:bold;
-    text-indent:10px;
-    color:#666;
+    line-height: 25px;
+    font-size: 14px;
+    font-weight: bold;
+    text-indent: 10px;
+    color: #666;
 }

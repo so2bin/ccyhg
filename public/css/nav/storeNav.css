@@ -1,6 +1,6 @@
 /*导航条*/
 div.navbar{
-    height:36px;
+    height:37px;
     width: 100%;
     margin-bottom: 0px;
     background:#eee;
@@ -16,17 +16,19 @@ div.navbar{
     overflow:hidden;
 }
 
-.navbar ul a{
+.navbar a{
     float: left;
     display: inline;
     line-height:36px;
     font-size: 22px;
     padding:0 40px;
+
+    height: 36px;
 }
 
-.navbar a{
-    color: #2fa8ec;
-    height: 36px;
+.navbar li{
+    font-weight:bolder;
+    color: inherit;
 }
 
 .navbar  a:link,
@@ -35,8 +37,16 @@ div.navbar{
     color: #2fa8ec;
 }
 
-.navbar a:focus{
-    background-color: #2fa8ec;
+.navbar a:focus,
+.navbar a:active
+{
+    background-color: #555;
     color: #fcf8e3;
     border-radius: 4px;
+}
+
+.activeNav{
+    /*border: solid 1px;*/
+    border-radius: 4px;
+    background-color: #555;
 }
