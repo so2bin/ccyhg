@@ -16,11 +16,9 @@ router.get('/', function(req, res, next) {
       type: dbStore.sequelize.QueryTypes.SELECT
     })
   ]).spread(function (sqlItems) {
-    let result = [
-
-    ];
-    let items = JSON.stringify({
-      msg: sqlItems
+    let result = [];
+    sqlItems.forEach(function (itm, idx) {
+      result.push(itm);
     });
     res.render('index',{title:'CC优惠购', items: result});
     //res.end(result);
