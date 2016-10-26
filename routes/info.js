@@ -5,7 +5,6 @@ const express       = require('express');
 const router        = express.Router();
 const path          = require('path');
 const BBPromise     = require('bluebird');
-const selectContent = require('../config/selectConfig.js')
 const dbStore       = require('../db/index');
 
 /* GET goods info in tbl_store */
@@ -17,7 +16,10 @@ router.get('/', function (req, res) {
 
 router.get('/listgoods', function (req, res) {
   var tblName = 'tbl_store';
-  var sqlData = `SELECT * FROM ${tblName} ORDER BY ftime`;
+  var sqlData = `SELECT id, ftime, type, subtype1, subtype2, title,
+    step1, step2, realprice, coupon, collect, CONCAT(LEFT(pic1,30),"....") as pic1, 
+    CONCAT(LEFT(pic2,30),"...") as pic2, CONCAT(LEFT(pic3,30),"...") as pic3
+    FROM ${tblName} ORDER BY ftime`;
 
   BBPromise.resolve([
     dbStore.sequelize.query(sqlData, {

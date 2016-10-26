@@ -13,6 +13,7 @@ const INFO_THEADER = [
   {title: '描述2'},
   {title: '券后价格'},
   {title: '优惠价格'},
+  {title: '收藏数'},
   {title: '图片1'},
   {title: '图片2'},
   {title: '图片3'},

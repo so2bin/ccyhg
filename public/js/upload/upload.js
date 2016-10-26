@@ -2,8 +2,9 @@
  * Created by Administrator on 2016/10/2 0002.
  */
 'use strict';
+/*********************************************************************************/
+// 按钮，对话框等初始化
 // 初始化时获得下来选择框在内容
-
 $(function () {
   var selCon     = null;
   var mainKeyVal = null, subKey1Val = null;
@@ -75,7 +76,8 @@ $(function () {
   $('.navbar a[href=\"' + window.location.pathname + '\"]').addClass('activeNav');
 });
 
-// 初始化图片上传插件
+/************************************************************************************/
+// 初始化图片上传插件   该插件下载已经没有使用，用的是自己的canvas实现的压缩，上传功能
 var pics = null;
 $(function () {
   // 初始化插件
@@ -92,51 +94,101 @@ $(function () {
   });
 });
 
-/**********************************************/
+/***************************************************************************************/
 // 点击上传数据
+/***
+ * 压缩图片到100K
+ * @param img
+ */
+function compressPic(img) {
+  let cpRatio = 1;
+  let dstSize = 100000; // 100KB
+  // 大于100KB才进行压缩
+  if(img.src.length>dstSize){
+    cpRatio = img.src.length/dstSize;
+  }
+  return cpRatio;
+}
+
 // init upload data
+let fileList  = null;
+let formFiles = {};
+
+// 选择图片 形成缩略图
+$('#file-input').on('change', function () {
+  formFiles = {};
+  fileList  = this.files;        // FileList {0: File, 1: File, length: 2}
+  let flag  = 0;
+  for (var idx = 0; idx < fileList.length; ++idx) {
+    let file   = fileList[idx];
+    let reader = new FileReader();
+    let img = new Image();
+    // 读取原图为data url
+    reader.readAsDataURL(file);
+    reader.onloadend = function (e) {
+      img.src = e.target.result;
+      console.log('file original length:'+e.target.result.length)
+    };
+    // canvas展示缩略图
+    let $canvas = $('<canvas></canvas>');
+    $canvas.appendTo('#previewPic');
+    $canvas.addClass('thumbnail');
+    let cnv = $canvas[0];
+    let context = cnv.getContext('2d');
+
+    // img获得数据, 生成压缩图，画缩略图
+    img.onload = function () {
+      let ratio = compressPic(img);
+
+      context.drawImage(img,0,0,300,150);
+      let canUrl = cnv.toDataURL("image/jpeg", 0.96);
+      formFiles['file' + (flag++)] = canUrl;
+      console.log('file canvas length:'+canUrl.length);
+      /***  展示压缩后的图片
+      let newImg = new Image();
+      let newCan = $('<canvas style="border: 1px solid"></canvas>');
+      newCan.appendTo('#previewPic')
+      let newCtx = newCan[0].getContext('2d');
+      newImg.src = canUrl;
+      newImg.onload = function () {
+        newCtx.drawImage(newImg,0,0)
+      }
+       **/
+    };
+  }
+});
+
 let initUploadData = function () {
   let formdata   = new FormData();
   let serialData = $('form').serializeArray();
-  let serialJson = {};
   serialData.forEach(function (itm) {
-    serialJson[itm.name] = itm.value;
+    formdata.append(itm.name, itm.value);
   });
-  $.extend(formdata, serialJson);
-  $.extend(formdata, {
-    pics: ZYFILE.uploadFile
-  });
-  console.log(formdata);
   return formdata;
 };
 
-$('#file-input').on('change',function () {
-  let fileList = this.files;
-
-  $.each(fileList,function (idx,file) {
-    let reader = new FileReader();
-    reader.readAsArrayBuffer(file);
-    reader.onload = function (e) {
-      console.log('-----',e.target.result.byteLength);
-    };
-  });
-  console.log(fileList)
-});
-
+// 提交按钮
 $(function () {
   $('#formSubmit').click(function () {
+    console.log(formFiles)
     let uploadData = initUploadData();
-    $('form').ajaxSubmit({
-      url         : '/upload',
-      type        : 'POST',
-      data        : uploadData,
-      clearForm   : false,
-      resetForm   : false,
-      beforeSubmit: function (formDataa, jqForm, options) {
+    $.each(formFiles, function (key, value) {
+      uploadData.append(key, value);
+    });
+
+    $.ajax({
+      url        : '/upload',
+      data       : uploadData,
+      type       : 'POST',
+      // THIS MUST BE DONE FOR FILE UPLOADING
+      contentType: false,
+      processData: false,
+      // ... Other options like success and etc
+      beforeSend: function (formDataa, jqForm, options) {
         $('#loading').dialog('open');
         return true;
       },
-      success     : function (responseText, statusText) {
+      success    : function (responseText, statusText) {
         if (responseText) {
           $('#loading').css('color', 'green').html('数据提交成功...');
           setTimeout(function () {
@@ -144,13 +196,41 @@ $(function () {
           }, 1000)
         }
       },
-      error       : function (event, errorText, errorType) { //错误时调用
+      error      : function (event, errorText, errorType) { //错误时调用
         $('#loading').css('color', 'red').html('数据提交出错!');
         setTimeout(function () {
           $('#loading').dialog('close');
         }, 2000)
       }
     });
+
+    // $('form').ajaxSubmit({
+    //   url         : '/upload',
+    //   type        : 'POST',
+    //   data        : uploadData,
+    //   // contentType: false,
+    //   // processData: false,
+    //   clearForm   : false,
+    //   resetForm   : false,
+    //   beforeSubmit: function (formDataa, jqForm, options) {
+    //     $('#loading').dialog('open');
+    //     return true;
+    //   },
+    //   success     : function (responseText, statusText) {
+    //     if (responseText) {
+    //       $('#loading').css('color', 'green').html('数据提交成功...');
+    //       setTimeout(function () {
+    //         $('#loading').dialog('close');
+    //       }, 1000)
+    //     }
+    //   },
+    //   error       : function (event, errorText, errorType) { //错误时调用
+    //     $('#loading').css('color', 'red').html('数据提交出错!');
+    //     setTimeout(function () {
+    //       $('#loading').dialog('close');
+    //     }, 2000)
+    //   }
+    // });
 
   });
 

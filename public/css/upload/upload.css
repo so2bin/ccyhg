@@ -81,6 +81,7 @@ input:focus, textarea:focus {
 
 #picDiv {
     display: inline-block;
+    height: 100px;
 }
 
 .submitButton {
@@ -99,4 +100,11 @@ input:focus, textarea:focus {
     font-weight: bold;
     text-indent: 10px;
     color: #666;
+}
+
+.thumbnail {
+    height: 120px;
+    width: 100px;
+    display: inline-block;
+    border:1px solid;
 }

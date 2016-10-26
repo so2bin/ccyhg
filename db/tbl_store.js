@@ -59,6 +59,12 @@ module.exports = function (sequelize, DataTypes) {
             allowNull: false,
             comment: '优惠价格'
         },
+        collect: {
+            field: 'collect',
+            type: DataTypes.INTEGER(11),
+            allowNull: true,
+            comment: '收藏数'
+        },
         pic1:{
             field: 'pic1',
             type: DataTypes.STRING(63),
