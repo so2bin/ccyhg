@@ -95,6 +95,7 @@ function generateUIDName() {
 function storeGoodsPics(pics) {
   let rePicsContent = [];
   pics.forEach(function (picBase64) {
+    // 将data:image/png;base64,这段内容过滤掉
     picBase64      = picBase64.replace(/^data:image\/\w+;base64,/, "");
     let dataBuffer = new Buffer(picBase64, 'base64');
     let picName    = generateUIDName();

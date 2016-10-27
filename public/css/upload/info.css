@@ -15,11 +15,17 @@ body {
     color: #999;
 }
 
-#getInfo {
+#btns-getInfo {
+    margin-top: 20px;
     height: 60px;
 }
 
-#btn_getinfo {
+.btn-info {
     float: left;
-    left: 30px;
+    margin: 0 0px 0 60px;
+}
+
+.btn-info-actived{
+    background: #37AAEB;
+    color: #ECF6F9;
 }

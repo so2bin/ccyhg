@@ -9,14 +9,20 @@
         物品查询系统
     </h1>
 
-    <div id="getInfo">
-        <button id="btn_getinfo">请求数据</button>
+    <div id="btns-getInfo">
+        <div class="btn-info">
+            <button id="btn-getInfo">请求数据</button>
+        </div>
+        <div class="btn-info">
+            <button id="btn-delRow">多选</button>
+        </div>
+        <div class="btn-info">
+            <button id="btn-clearSel" disabled>取消选择</button>
+        </div>
     </div>
 
-    <table id="table_id" class="display"></table>
+    <table id="table-goods-list" class="display"></table>
 </div>
-
-
 
 <script type="text/javascript" src="/js/other/jquery-3.1.0.js"></script>
 <script type="text/javascript" src="/jquery-ui/jquery-ui.js"></script>

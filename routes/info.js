@@ -17,8 +17,7 @@ router.get('/', function (req, res) {
 router.get('/listgoods', function (req, res) {
   var tblName = 'tbl_store';
   var sqlData = `SELECT id, ftime, type, subtype1, subtype2, title,
-    step1, step2, realprice, coupon, collect, CONCAT(LEFT(pic1,30),"....") as pic1, 
-    CONCAT(LEFT(pic2,30),"...") as pic2, CONCAT(LEFT(pic3,30),"...") as pic3
+    step1, step2, realprice, coupon, collect, pic1, pic2, pic3
     FROM ${tblName} ORDER BY ftime`;
 
   BBPromise.resolve([
