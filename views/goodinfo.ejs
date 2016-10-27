@@ -25,15 +25,23 @@
             <div class="good-detail-link">
                 <a href="#" class="btn btn-default">详情</a>
             </div>
+            <div class="buy">
+                <div class="btn_buy1 buy-up" data-clipboard-text="<%- item.step1%>">步骤1</div>
+                <div class="btn_buy2 buy-up" data-clipboard-text="<%- item.step2%>">步骤2</div>
+            </div>
             <div class="good-collect-num">
                 收藏数:&nbsp;
                 <span>
                     <%- item.collect %>
                 </span>
             </div>
-            <div class="btn_good_collect heart"></div>
+            <div class="btn_good_collect_active heart-active"></div>
+            <div class="btn_good_collect_inactive heart-inactive"></div>
         </div>
     </div>
     <% }) %>
     <% } %>
+    <div id="dialog-aftercopy">
+        复制完成
+    </div>
 </div>

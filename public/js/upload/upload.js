@@ -78,21 +78,21 @@ $(function () {
 
 /************************************************************************************/
 // 初始化图片上传插件   该插件下载已经没有使用，用的是自己的canvas实现的压缩，上传功能
-var pics = null;
-$(function () {
-  // 初始化插件
-  pics = $("#picUpload").zyUpload({
-    width     : '400px',                 // 宽度
-    height    : "280px",                 // 宽度
-    itemWidth : "120px",                 // 文件项的宽度
-    itemHeight: "100px",                 // 文件项的高度
-    url       : "/upload",  // 上传文件的路径
-    multiple  : true,                    // 是否可以多个文件上传
-    dragDrop  : true,                    // 是否可以拖动上传文件
-    del       : true,                    // 是否可以删除文件
-    finishDel : false,  				  // 是否在上传文件完成后删除预览
-  });
-});
+
+// $(function () {
+//   // 初始化插件
+//   let pics = $("#picUpload").zyUpload({
+//     width     : '400px',                 // 宽度
+//     height    : "280px",                 // 宽度
+//     itemWidth : "120px",                 // 文件项的宽度
+//     itemHeight: "100px",                 // 文件项的高度
+//     url       : "/upload",  // 上传文件的路径
+//     multiple  : true,                    // 是否可以多个文件上传
+//     dragDrop  : true,                    // 是否可以拖动上传文件
+//     del       : true,                    // 是否可以删除文件
+//     finishDel : false,  				  // 是否在上传文件完成后删除预览
+//   });
+// });
 
 /***************************************************************************************/
 // 点击上传数据
