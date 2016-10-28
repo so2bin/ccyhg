@@ -95,6 +95,7 @@ $(function () {
       // 清除按钮选择状态
       $('#btn-delRow').removeClass('btn-info-actived');
       $('#btn-delRow').html('多选');
+      $('#btn-edit').button('disable');
       bDelRowActive = !bDelRowActive;
       selNum        = 0;
     }
@@ -127,12 +128,13 @@ $(function () {
             type   : 'DELETE',
             // 成功后才从表中删除行
             success: function (responseText, statusText) {
-              selRows.remove().draw(false);
               if (responseText) {
                 $('#loading').css('color', 'green').html('删除成功').dialog('open');
                 setTimeout(function () {
                   $('#loading').dialog('close');
-                }, 1000)
+                }, 1000);
+                selRows.remove().draw(false);
+                $('#btn-edit').button('disable');
               }
             },
             // 失败不从表中删除行
