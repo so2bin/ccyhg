@@ -1,6 +1,7 @@
 /**
  * Created by Administrator on 2016/10/2 0002.
  */
+'use strict';
 
 $(function () {
   $('.submitButton input[type=submit]').button();
@@ -56,7 +57,9 @@ $(function () {
   $('#formSubmit').click(function () {
     let uploadData = initUploadData();
     $.each(formFiles, function (key, value) {
-      uploadData.append(key, value);
+      if(value!==null){
+        uploadData.append(key, value);
+      }
     });
 
     $.ajax({

@@ -3,6 +3,7 @@ body {
     font-size: 14px;
     margin: 0px auto;
     text-align: center;
+    font-family: '微软雅黑';
 }
 
 label {
@@ -86,11 +87,50 @@ input:focus, textarea:focus {
     margin-right: 30px;
 }
 
+/* 图片处理 */
 #picDiv {
     display: inline-block;
-    height: 30px;
+    width: 80%;
+    height: 180px;
+    border: solid 2px gainsboro;
+    padding-top: 3px;
+}
+#previewPic{
+    width: 100%;
+    padding-top: 15px;
+    height: 150px;
+}
+.thumb-warpper{
+    display: inline-block;
+    margin:0 2px;
+    padding-top: 10px;
+    position: relative;
+}
+#thumb-delete{
+    display: block;
+    position: absolute;
+    width: 15px;
+    height:15px;
+
+    top: 0px;
+    right: 0px;
+    background: #fff;
+    border:2px solid red;
+    border-radius: 50%;
 }
 
+#thumb-delete:hover{
+    background: red;
+}
+
+.thumbnail {
+    display: block;
+    height: 120px;
+    width: 100px;
+    border:dashed 1px darkcyan ;
+}
+
+/* 提交按钮 */
 .submitButton {
     margin-top: 20px;
     /*margin-left: 300px;*/
@@ -116,11 +156,4 @@ input:focus, textarea:focus {
     font-weight: bold;
     text-indent: 10px;
     color: #666;
-}
-
-.thumbnail {
-    height: 120px;
-    width: 100px;
-    display: inline-block;
-    border:1px solid;
 }

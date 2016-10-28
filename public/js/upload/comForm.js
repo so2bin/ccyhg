@@ -86,12 +86,22 @@
   // let fileList  = null;
   // let formFiles = {};
 
+  // 清空所有图片的按钮
+  // $('#btn-thumb-delete').button();
+  // $('#btn-thumb-delete').click(function () {
+  //   //清空选择的文件
+  //   let files = $('#file-input');
+  //   files.after(files.clone().val(''));
+  //   files.remove();
+  //   //删除缩略
+  //   $('#previewPic').children($('.thumb-warpper')).remove();
+  // });
+
   // 选择图片 形成缩略图
   $.hl_GetUpFiles = function (formFiles) {
     $('#file-input').on('change', function () {
       formFiles['file0'] = null, formFiles['file1'] = null, formFiles['file2'] = null;
       let fileList = this.files;        // FileList {0: File, 1: File, length: 2}
-      let flag     = 0;
       for (var idx = 0; idx < fileList.length; ++idx) {
         let file   = fileList[idx];
         let reader = new FileReader();
@@ -103,20 +113,25 @@
           console.log('file original length:' + e.target.result.length)
         };
         // canvas展示缩略图
-        let $canvas      = $('<canvas></canvas>');
-        $canvas.appendTo('#previewPic');
-        $canvas.addClass('thumbnail');
-        let cnv     = $canvas[0];
+        let thumImg      = $(
+          '<div class="thumb-warpper">' +
+          '  <div id="thumb-delete"></div>' +
+          '  <canvas class="thumbnail"></canvas>' +   // 略缩图区
+          '</div>'
+        );
+        thumImg.appendTo('#previewPic');
+        // $canvas.addClass('thumbnail');
+        let cnv     = thumImg.find('canvas').get(0);
         let context = cnv.getContext('2d');
 
         // img获得数据, 生成压缩图，画缩略图
+        let flag = idx;
         img.onload = function () {
           let ratio = compressPic(img);
-
           context.drawImage(img, 0, 0, 300, 150);
           let canUrl                   = cnv.toDataURL("image/jpeg", 0.96);
-          formFiles['file' + (flag++)] = canUrl;
-          console.log('file canvas length:' + canUrl.length, Object.keys(formFiles));
+          formFiles['file' + flag] = canUrl;
+          console.log('file canvas length:' + canUrl.length);
           /***  展示压缩后的图片
            let newImg = new Image();
            let newCan = $('<canvas style="border: 1px solid"></canvas>');
