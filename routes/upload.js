@@ -9,7 +9,7 @@ const selectContent = require('../config/selectConfig.js')
 const BBPromise     = require('bluebird');
 const multiparty    = require('multiparty');
 const dbStore       = require('../db/index');
-const config          = require('../config');
+const config        = require('../config');
 
 /* GET users listing. */
 router.get('/', function (req, res) {
@@ -40,9 +40,9 @@ router.post('/', function (req, res) {
 
     // 保存图片到本地images/goodspic/目录下 返回路径
     let storePics = [];
-    if(pic1!==null) storePics.push(pic1);
-    if(pic2!==null) storePics.push(pic2);
-    if(pic3!==null) storePics.push(pic3);
+    if (pic1 !== null) storePics.push(pic1);
+    if (pic2 !== null) storePics.push(pic2);
+    if (pic3 !== null) storePics.push(pic3);
 
     const picsContents = storeGoodsPics(storePics);
 
@@ -63,17 +63,24 @@ router.post('/', function (req, res) {
           realPrice: realPrice,
           coupon   : coupon,
           collect  : collect,
-          pic1     : picsContents[0]===undefined? null:picsContents[0],
-          pic2     : picsContents[1]===undefined? null:picsContents[1],
-          pic3     : picsContents[2]===undefined? null:picsContents[2]
+          pic1     : picsContents[0] === undefined ? null : picsContents[0],
+          pic2     : picsContents[1] === undefined ? null : picsContents[1],
+          pic3     : picsContents[2] === undefined ? null : picsContents[2]
         }
       })
-    ]).spread(function (data) {
-      //console.log(data);
-      res.end('服务器处理成功');
+    ]).spread(function () {
+      res.set('Content-Type',"application/json;charset=utf-8");
+      res.end(JSON.stringify({
+        code: 0,
+        msg : '图片存储成功'
+      }));
     }).catch(function (err) {
+      res.set('Content-Type',"application/json;charset=utf-8");
       console.log(err);
-      res.end('ERROR' + err)
+      res.end(JSON.stringify({
+        code: 101,
+        msg : `ERROR: ${err}`
+      }))
     });
   });
 
@@ -102,9 +109,9 @@ function storeGoodsPics(pics) {
     rePicsContent.push(`/images/goodspic/${picName}.jpg`);
     console.log(picName);
     fs.writeFile(`public/images/goodspic/${picName}.jpg`, dataBuffer, function (err) {
-      if(err){
+      if (err) {
         throw `ERROR: Store picture dataUrl as jpg failed! Check the formation of picture is .jpg`;
-      }else{
+      } else {
         console.log(`stored as file ${picName}.jpg`)
       }
     })

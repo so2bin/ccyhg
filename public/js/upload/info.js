@@ -3,27 +3,34 @@
  */
 'use strict';
 const INFO_THEADER = [
-  {title: '商品ID'},
-  {title: '入库时间', width: '5%'},
-  {title: '主类'},
-  {title: '子类1'},
-  {title: '子类2'},
-  {title: 'title'},
-  {title: '描述1'},
-  {title: '描述2'},
-  {title: '券后价格'},
-  {title: '优惠价格'},
-  {title: '收藏数'},
-  {title: '图片1', swidth: '5%'},
-  {title: '图片2', swidth: '5%'},
-  {title: '图片3', swidth: '5%'},
+  {title: '商品ID', width: '36px'},
+  {title: '入库时间', width: '60px'},
+  {title: '主类', width: '30px'},
+  {title: '子类1', width: '30px'},
+  {title: '子类2', width: '30px'},
+  {title: 'title', width: '100px'},
+  {title: '描述1', width: '200px'},
+  {title: '描述2', width: '300px'},
+  {title: '券后价格', width: '20px'},
+  {title: '优惠价格', width: '20px'},
+  {title: '收藏数', width: '20px'},
+  {title: '图片1', width: '40px'},
+  {title: '图片2', width: '40px'},
+  {title: '图片3', width: '40px'},
 ];
 
+const columnDefs = [
+  {'width': '20px', "targets": 11}
+];
+let table_goods   = null;  // 商品表格对象
 
+/**************************************************
+  控件的初始化
+  ajax从服务器获取商品数据列表
+*/
 $(function () {
   // 信息以二维数据存放
-  // ajax从服务器获取商品数据列表
-  let bDelRowActive = false;
+  let bDelRowActive = false; // 标记多选按钮是否激活
   let selNum        = 0;    // 标记当前选择行的数量
   const listInfo    = function () {
     $.ajax({
@@ -39,13 +46,20 @@ $(function () {
           }
           data.push(row);
         });
-        $('#table-goods-list').DataTable({
+        table_goods = $('#table-goods-list').DataTable({
           autoWidth : false,
+          columnDefs: columnDefs,
           destroy   : true,
           lengthMenu: [[20, 50, 100, -1], [20, 50, 100, "All"]],
           data      : data,
           columns   : INFO_THEADER
         });
+        // 设置图片列的宽度
+        $('#table-goods-list').css('table-layout', 'fixed');
+        $('#table-goods-list tbody tr td/*:nth-child(12)*/').css({
+          'word-wrap': 'break-word'
+        });
+
         // 监听多选
         $('#table-goods-list tbody').on('click', 'tr', function () {
           if (bDelRowActive) {
@@ -58,6 +72,12 @@ $(function () {
               selNum = 0;
               $('#btn-delRow').html('多选');
             }
+            // 编辑按钮
+            if ($('.selected').length !== 1) {
+              $('#btn-edit').button('disable');
+            } else {
+              $('#btn-edit').button('enable');
+            }
           }
         });
       },
@@ -67,6 +87,19 @@ $(function () {
     })
   };
 
+  // 清除所有选择
+  let clearSelection = function () {
+    if (bDelRowActive === true) {
+      $('#btn-clearSel').button('disable');
+      $('.selected').removeClass('selected');
+      // 清除按钮选择状态
+      $('#btn-delRow').removeClass('btn-info-actived');
+      $('#btn-delRow').html('多选');
+      bDelRowActive = !bDelRowActive;
+      selNum        = 0;
+    }
+  };
+
   // 页面初始化时就直接获得数据
   listInfo();
 
@@ -74,24 +107,45 @@ $(function () {
   $('#btn-getInfo').button();
   $('#btn-delRow').button();
   $('#btn-clearSel').button();
+  $('#btn-edit').button();
 
   $('#btn-getInfo').click(function () {
+    // 先清除所有选择
+    clearSelection();
     listInfo();
-  });
+  }).blur();
 
   $('#btn-delRow').click(function () {
     // 如果关闭删除，则清掉之前的所有多选项
     if (bDelRowActive === true) {
       // 如果当前已经选择了项,则进行删除处理
       if (selNum === 1) {
-
+        let selRows = table_goods.rows('.selected');
+        selRows.data().map(row=> {
+          $.ajax({
+            url    : '/info/listgoods?id=' + row[0],
+            type   : 'DELETE',
+            // 成功后才从表中删除行
+            success: function (responseText, statusText) {
+              selRows.remove().draw(false);
+              if (responseText) {
+                $('#loading').css('color', 'green').html('删除成功').dialog('open');
+                setTimeout(function () {
+                  $('#loading').dialog('close');
+                }, 1000)
+              }
+            },
+            // 失败不从表中删除行
+            error  : function (event, errorText, errorType) { //错误时调用
+              $('#loading').css('color', 'red').html('删除过程出错!').dialog('open');
+              setTimeout(function () {
+                $('#loading').dialog('close');
+              }, 1000)
+            }
+          })
+        });
       } else {  // 否则仅仅关闭多选
-        $('#btn-clearSel').button('disable');
-        $('.selected').removeClass('selected');
-        // 清除按钮选择状态
-        $('#btn-delRow').removeClass('btn-info-actived');
-        $('#btn-delRow').html('多选');
-        bDelRowActive = !bDelRowActive;
+        clearSelection();
       }
     } else {
       $('#btn-delRow').addClass('btn-info-actived').blur();
@@ -102,17 +156,85 @@ $(function () {
 
   $('#btn-clearSel').click(function () {
     if (bDelRowActive === true) {
-      $(this).button('disable');
-      $('.selected').removeClass('selected');
-      selNum = 0;
-      // 清除按钮选择状态
-      $('#btn-delRow').removeClass('btn-info-actived');
-      $('#btn-delRow').html('多选');
-      bDelRowActive = !bDelRowActive;
+      clearSelection();
     }
   });
+
+  $('#loading').dialog({
+    modal        : true,
+    autoOpen     : false,
+    closeOnEscape: false, //按下 esc 无效
+    resizable    : false,
+    draggable    : false,
+    width        : 200,
+    height       : 50
+  }).parent().parent().find('.ui-widget-header').hide();
+
 });
 
+// 编辑器按钮
+$(function () {
+  let initUploadData = function () {
+    let formdata   = new FormData();
+    let serialData = $('form').serializeArray();
+    serialData.forEach(function (itm) {
+      formdata.append(itm.name, itm.value);
+    });
+    return formdata;
+  };
+
+  const formFiles = {};
+  $.hl_GetUpFiles(formFiles);
+
+  // 点击编辑按钮， 将所有内容写到编辑器里面
+  $('#btn-edit').click(function () {
+    $('#tbl-editor').show();
+    $.hl_FillEditor(table_goods.row('.selected').data());
+  });
+
+  $('#cancelSubmit').click(function () {
+    $('#tbl-editor').hide();
+  });
+
+  // 更新按钮
+  $(function () {
+    $('#formSubmit').click(function () {
+      let uploadData = initUploadData();
+      $.each(formFiles, function (key, value) {
+        uploadData.append(key, value);
+      });
+      $.ajax({
+        url        : '/upload?type=update',
+        data       : uploadData,
+        type       : 'POST',
+        dataType   : 'json',
+        // THIS MUST BE DONE FOR FILE UPLOADING
+        contentType: false,
+        processData: false,
+        // ... Other options like success and etc
+        beforeSend : function (formDataa, jqForm, options) {
+          $('#loading').dialog('open');
+          return true;
+        },
+        success    : function (res, status) {
+          console.log(res);
+          if (res) {
+            $('#loading').css('color', 'green').html('数据提交成功...');
+            setTimeout(function () {
+              $('#loading').dialog('close');
+            }, 1000)
+          }
+        },
+        error      : function (event, errorText, errorType) { //错误时调用
+          $('#loading').css('color', 'red').html('数据提交出错!');
+          setTimeout(function () {
+            $('#loading').dialog('close');
+          }, 2000)
+        }
+      });
+    });
+  });
+});
 
 // 包含导航条的页面要包含该js代码： 导航条激活颜色
 $(function () {
