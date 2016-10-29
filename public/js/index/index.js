@@ -60,7 +60,7 @@ $(function () {
   }
 });
 
-/**********************************************************************/
+/*****************************************************************
 /*
  商品相关js
  */
@@ -84,7 +84,7 @@ $(function () {
   })
 });
 
-/*
+/********************************************
  点击购买步骤按钮，完成复制过程
  */
 $(function () {
@@ -143,8 +143,126 @@ $(function () {
       $(this).addClass('buy-up');
     }
   });
+});
+
+/*****************************************************************
+ *
+ * 用户信息按钮
+ *
+*/
+// 保存用户信息
+var USER = null;
+
+$(function () {
+  // user 按钮
+  let bInUser = false;   // 个人信息界面切换标记
+  $('#btn-user-img').click(function () {
+    if(!bInUser){  // 当前为商品界面，切换到用户界面
+      bInUser = !bInUser;
+      // 按钮颜色变化
+      $('#user-img-inactive').css('display','none');
+      $('#user-img-active').css('display','block');
+
+      // 显示用户信息界面或登陆界面
+      showUserInfo();
+    }else{   // 当前为用户界面，切换到商品界面
+      bInUser = !bInUser;
+      // 按钮颜色变化
+      $('#user-img-active').css('display','none');
+      $('#user-img-inactive').css('display','block');
+
+      // 切换到个人信息页面
+      $('#list-container').css('display','none');
+      $('#userInfo').css('display','block');
+    }
+
+  });
+
+  // 发起ajax请求 获得用户最新信息
+  var showUserInfo = function () {
+    $.ajax({
+      url: '/u',
+      type: 'GET',
+      success: function (res, status, xhr) {
+        if(res.code===100){
+          window.location.href = '/u/login';
+        }else if(res.code===0){
+          // 切换到个人信息页面
+          $('#list-container').css('display','block');
+          $('#userInfo').css('display','none');
+        }
+      },
+      error: function (err) {
+
+      }
+    })
+  }
+});
+
+
+/******************************************************
+ * 登陆,注册提交按钮
+ */
+$(function () {
+  $('#btn-login-submit').click(function () {
+    $('.login-result').html('');   // 清空错误提示
+    $.ajax({
+      url: '/u/login',
+      type:'POST',
+      data: $('#form-login').serializeArray(),
+      success: function (res, statusText) {
+        // 登陆账号密码验证出错
+        if(res.code!==0){
+          $('.login-result').html(res.msg).css('color','red');
+        }else{
+          // 验证成功，跳转到个人信息列表(session)
+          window.location.href = '/';
+        }
+      },
+      error: function (err) {
+        $('.login-result').html(res.msg).css('color','red');
+      }
+    })
+  });
+
+  /* 登陆界面点击注册按钮 */
+  $('#loginForm .login-reg').click(function () {
+    $('#loginForm').css('display','none');
+    $('#regForm').css('display','block');
+  });
+
+  /* 注册界面点击登陆按钮 */
+  $('#regForm .reg-login').click(function () {
+    $('#loginForm').css('display','block');
+    $('#regForm').css('display','none');
+  });
+
+  /* 注册按钮 */
+  $('#btn-reg-submit').click(function () {
+    $('.reg-result').html('');   // 清空错误提示
+    $.ajax({
+      url: '/u/reg',
+      type:'POST',
+      data: $('#form-reg').serializeArray(),
+      success: function (res, statusText) {
+        // 登陆账号密码验证出错
+        if(res.code!==0){
+          $('.reg-result').html(res.msg).css('color','red');
+        }else{
+          // 验证成功，跳转到个人信息列表(session)
+          window.location.href = '/';
+        }
+      },
+      error: function (err) {
+        $('.reg-result').html(res.msg).css('color','red');
+      }
+    })
+  });
 
 });
+
+
+
 
 
 

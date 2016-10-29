@@ -78,7 +78,7 @@ router.post('/', function (req, res) {
       res.set('Content-Type',"application/json;charset=utf-8");
       console.log(err);
       res.end(JSON.stringify({
-        code: 101,
+        code: 110,
         msg : `ERROR: ${err}`
       }))
     });

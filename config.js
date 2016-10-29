@@ -16,15 +16,16 @@ var signConfig_hbb = {
 var appsecret_hbb  = 'c314a2a18160d5e3cb30be901a2ec1d4';
 
 module.exports = {
-  hhm        : {
+  cookieSecret: 'helibinbin_ccyhg_cookiescret',
+  hhm         : {
     config: signConfig_hhm,
     secret: appsecret_hhm
   },
-  hbb        : {
+  hbb         : {
     config: signConfig_hbb,
     secret: appsecret_hbb
   },
-  mysql      : {
+  mysql       : {
     host      : "w.rdc.sae.sina.com.cn",
     port      : 3307,
     database  : "app_ccyhg",
@@ -32,7 +33,7 @@ module.exports = {
     "password": "45l4jlw4x4m5mllwxxl31jk2ymi2iikk15j55khw"
   },
   // ubuntu duoyi
-  mysql_local: {
+  mysql_local : {
     host          : "localhost",
     port          : 3306,
     database      : "ccyhg",
@@ -41,5 +42,5 @@ module.exports = {
     maxConnections: 20
   },
   // 服务器ID 4位
-  svrId: 1001
+  svrId       : 1001
 };

@@ -1,0 +1,84 @@
+<%- include header1.ejs%>
+
+<link rel="stylesheet" type="text/css" href="/css/nav/demo-1.css">
+<link rel="stylesheet" type="text/css" href="/css/index/index.css">
+
+<div class="wrapper">
+    <div class="menu">
+        <img id="menu-bg" src="" />
+        <ul>
+            <li class="active"><a href="#">最新推荐</a></li>
+            <li><a href="#">男装</a></li>
+            <li><a href="#">女装</a></li>
+            <li><a href="#">化妆品</a></li>
+            <li><a href="#">其它</a></li>
+        </ul>
+    </div>
+
+    <div class="screen">
+        <!--导航条-->
+        <div class="navbar">
+            <div class="burger">
+                <div class="x"></div>
+                <div class="y"></div>
+                <div class="z"></div>
+            </div>
+            <!--用户按钮-->
+            <div id="btn-user-img">
+                <div id="user-img-inactive"></div>
+                <div id="user-img-active"  style="display: none"></div>
+            </div>
+        </div>
+
+        <!--登陆-->
+        <div id="loginForm">
+            <form id="form-login">
+                <h2>登陆</h2>
+                <div>
+                    用户名: <input type="text" name="username">
+                </div>
+                <div>
+                    密码： <input type="password" name="password">
+                </div>
+                <div>
+                    <input type="button" value="登陆" id="btn-login-submit">
+                    <span class="login-reg">注册</span>
+                </div>
+            </form>
+            <div class="login-result"></div>
+        </div>
+
+        <!--注册-->
+        <div id="regForm" style="display: none;">
+            <form id="form-reg">
+                <h2>注册</h2>
+                <div>
+                    用户名: <input type="text" name="username">
+                </div>
+                <div>
+                    密码： <input type="password" name="password">
+                </div>
+                <div class="sex">
+                    <input type="radio" name="sex" value="0" checked>男
+                    <input type="radio" name="sex" value="1">女
+                </div>
+                <div>
+                    <input type="button" value="注册" id="btn-reg-submit">
+                    <span class="reg-login">登陆</span>
+                </div>
+            </form>
+            <div class="reg-result"></div>
+        </div>
+
+    </div>
+
+</div>
+
+<script type="text/javascript" src="/js/other/jquery-3.1.0.js"></script>
+<script type="text/javascript" src="/jquery-ui/jquery-ui.js"></script>
+
+<script src="/js/index/index.js"></script>
+<script src="/plugins/clipboard.min.js"></script>
+
+<%- include footer.ejs%>
+

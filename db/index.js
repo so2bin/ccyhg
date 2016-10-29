@@ -1,6 +1,6 @@
-var config = require('../config');
+var config    = require('../config');
 var Sequelize = require('sequelize');
-var path = require('path');
+var path      = require('path');
 
 var db = {};
 
@@ -24,19 +24,20 @@ var sqlConfig = config.mysql_local;
 
 
 var sequelize = new Sequelize(sqlConfig.database
-    ,sqlConfig.user, sqlConfig.password, {
-        host: sqlConfig.host,
-        port: sqlConfig.port,
-        dialect: 'mysql',
-        timezone: 'Asia/Shanghai',
-        pool:{
-            maxConnections: sqlConfig.maxConnections
-        }
-    });
+  , sqlConfig.user, sqlConfig.password, {
+    host    : sqlConfig.host,
+    port    : sqlConfig.port,
+    dialect : 'mysql',
+    timezone: 'Asia/Shanghai',
+    pool    : {
+      maxConnections: sqlConfig.maxConnections
+    }
+  });
 
 db['GoodsStore'] = sequelize.import(path.join(__dirname, 'tbl_store.js'));
+db['Users']      = sequelize.import(path.join(__dirname, 'tbl_users.js'));
 
 module.exports = {
-    sequelize: sequelize,
-    Sequelize: Sequelize
+  sequelize: sequelize,
+  Sequelize: Sequelize
 };
