@@ -32,16 +32,16 @@
 
         <!--登陆-->
         <div id="loginForm">
+            <h2>登陆</h2>
             <form id="form-login">
-                <h2>登陆</h2>
                 <div>
-                    用户名: <input type="text" name="username">
+                    <span>用户名:</span>  <input type="text" name="username">
                 </div>
                 <div>
-                    密码： <input type="password" name="password">
+                    <span>密码：</span> <input type="password" name="password">
                 </div>
-                <div>
-                    <input type="button" value="登陆" id="btn-login-submit">
+                <div class="form-btn">
+                    <span value="登陆" id="btn-login-submit">登陆</span>
                     <span class="login-reg">注册</span>
                 </div>
             </form>
@@ -50,20 +50,20 @@
 
         <!--注册-->
         <div id="regForm" style="display: none;">
+            <h2>账号注册</h2>
             <form id="form-reg">
-                <h2>注册</h2>
                 <div>
-                    用户名: <input type="text" name="username">
+                    <span>用户名:</span> <input type="text" name="username">
                 </div>
                 <div>
-                    密码： <input type="password" name="password">
+                    <span>密码：</span> <input type="password" name="password">
                 </div>
                 <div class="sex">
                     <input type="radio" name="sex" value="0" checked>男
                     <input type="radio" name="sex" value="1">女
                 </div>
-                <div>
-                    <input type="button" value="注册" id="btn-reg-submit">
+                <div class="form-btn">
+                    <span id="btn-reg-submit">注册</span>
                     <span class="reg-login">登陆</span>
                 </div>
             </form>

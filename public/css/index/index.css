@@ -294,3 +294,62 @@ div.good-info {
 .login-reg, .reg-login{
     color: dodgerblue;
 }
+
+/**************************************************************/
+/*   登录/注册页面  */
+#loginForm, #regForm{
+    position: relative;
+    text-align: center;
+}
+
+#loginForm h2, #regForm h2{
+    margin: 20px 0 20px 0;
+}
+
+#form-login, #form-reg{
+    display: inline-block;
+}
+
+/* 输入框 */
+#form-login input:not([type=button]),
+#form-reg input:not([type=button]){
+    line-height:26px;
+    margin: 5px 10px;
+    border-radius: 6px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    background-color: #efefef;
+}
+
+#form-login input:focus,
+#form-reg input:focus{
+    border: solid 2px orange;
+}
+
+#form-login span, #form-reg span{
+    font-size: 16px;
+}
+
+#loginForm .form-btn,
+#regForm .form-btn{
+    margin:16px;
+}
+
+#form-login #btn-login-submit,
+#form-reg #btn-reg-submit{
+    width: 32px;
+    height: 14px;
+    line-height:14px;
+    border-radius: 4px;
+    font-family:'黑体';
+    margin-right: 20px;
+}
+
+#form-login .login-reg,
+#form-reg .reg-login{
+    font-size: 14px;
+}
+
+#regForm .sex{
+    margin-top:10px;
+}

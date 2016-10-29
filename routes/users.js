@@ -9,7 +9,8 @@ const regulation    = require('../config/regulations.js');
 /* GET users listing. */
 router.get('/', function (req, res, next) {
   var user = req.session.user;
-  res.set('Content-Type', "application/json;charset=utf-8");
+  // 前端ajax设定dataType: 'json', 这里可以不需要设定这个类型
+  // res.set('Content-Type', "application/json;charset=utf-8");
   if (!user) {
     res.end(JSON.stringify({
       code: 100,  // 没有登陆
@@ -50,7 +51,6 @@ router.post('/login', function (req, res, next) {
     })
   ]).spread(function (sqlUserRes) {
     console.log(sqlUserRes)
-    res.set('Content-Type', "application/json;charset=utf-8");
     if (sqlUserRes.length === 0) {
       res.end(JSON.stringify({
         code: 200,  // 账号错误
@@ -64,11 +64,12 @@ router.post('/login', function (req, res, next) {
     } else {
       // 账号密码匹配成功，更新登陆时间，返回结果
       let nowDateStr         = datefunctions.dateFormat(new Date(), 'yyyy/MM/dd hh:mm:ss');
-      const sqlUpUserLogTime = `UPDATE ${tblName} SET lastlogintime=${nowDateStr} WHERE username=$username`;
+      const sqlUpUserLogTime = `UPDATE ${tblName} SET lastlogintime=$nowDateStr WHERE username=$username`;
       dbModel.sequelize.query(sqlUpUserLogTime, {
         type: dbModel.sequelize.QueryTypes.UPDATE,
         bind: {
-          username: username
+          username  : username,
+          nowDateStr: nowDateStr
         }
       }).then(function () {
         req.session.user = {
@@ -78,7 +79,12 @@ router.post('/login', function (req, res, next) {
           code: 0,
           msg : `登陆成功`
         }))
-      })
+      }).catch(function (err) {
+        res.end(JSON.stringify({
+          code: 110,
+          msg : `ERROR: ${err}`
+        }))
+      });
     }
   }).catch(function (err) {
     res.end(JSON.stringify({
