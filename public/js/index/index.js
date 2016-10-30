@@ -200,7 +200,7 @@ $(function () {
       error   : function (err) {
         $('#user-res-tips').css('display','block').html('Sorry,服务器出错啦!');
         setTimeout(function () {
-          //window.location.href = '/';
+          window.location.href = '/';
         }, 500);
       }
     })
@@ -210,7 +210,10 @@ $(function () {
     $('#userInfo .user-id .value').html(user.id);
     $('#userInfo .user-name .value').html(user.username);
     $('#userInfo .user-sex .value').html(user.sex);
-  }
+  };
+
+  //登出按钮初始化
+  $('#user-header .user-login-out').button();
 });
 
 
@@ -231,7 +234,6 @@ $(function () {
       success : function (res, statusText) {
         // 登陆账号密码验证出错
         if (res.code !== 0) {
-          console.log(typeof res, res.code, res.msg)
           $('.login-result').html(res.msg).css('color', 'red');
         } else {
           // 验证成功，跳转到个人信息列表(session)
