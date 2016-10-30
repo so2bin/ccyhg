@@ -184,19 +184,32 @@ $(function () {
       url     : '/u',
       type    : 'GET',
       dataType: 'json',
+      contentType: 'charset=utf-8',
       success : function (res, status, xhr) {
-        if (res.code === 100) {
+        if (res.code != 0) {
           window.location.href = '/u/login';
         } else if (res.code === 0) {
           // 切换到个人信息页面
           $('#list-container').css('display', 'none');
           $('#userInfo').css('display', 'block');
+
+          // 初始化个人信息界面
+          initUserInfoWithRes(res.msg);
         }
       },
       error   : function (err) {
-
+        $('#user-res-tips').css('display','block').html('Sorry,服务器出错啦!');
+        setTimeout(function () {
+          //window.location.href = '/';
+        }, 500);
       }
     })
+  };
+  
+  var initUserInfoWithRes = function (user) {
+    $('#userInfo .user-id .value').html(user.id);
+    $('#userInfo .user-name .value').html(user.username);
+    $('#userInfo .user-sex .value').html(user.sex);
   }
 });
 

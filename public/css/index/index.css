@@ -280,20 +280,6 @@ div.good-info {
     transform-origin: 100% 100%;
 }
 
-/*******************************************************************/
-/*  用户信息 */
-#userinfo{
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    width: 100%;
-    height: 100%;
-    background: red;
-}
-
-.login-reg, .reg-login{
-    color: dodgerblue;
-}
 
 /**************************************************************/
 /*   登录/注册页面  */
@@ -348,6 +334,7 @@ div.good-info {
 #form-login .login-reg,
 #form-reg .reg-login{
     font-size: 14px;
+    color: dodgerblue;
 }
 
 #regForm .sex{

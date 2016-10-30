@@ -6,11 +6,12 @@ const dbModel       = require('../db/index');
 const datefunctions = require('../tools/datefunction.js');
 const regulation    = require('../config/regulations.js');
 
-/* GET users listing. */
+/*******************************************
+ * 返回个人信息
+ * */
 router.get('/', function (req, res, next) {
   var user = req.session.user;
   // 前端ajax设定dataType: 'json', 这里可以不需要设定这个类型
-  // res.set('Content-Type', "application/json;charset=utf-8");
   if (!user) {
     res.end(JSON.stringify({
       code: 100,  // 没有登陆
@@ -18,11 +19,46 @@ router.get('/', function (req, res, next) {
     }));
   } else {
     // 验证用户是否有效
-
-    res.end(JSON.stringify({
-      code: 0,
-      msg : `登陆成功`
-    }))
+    let tblName      = 'tbl_users';
+    let sqlUserInfo = `SELECT * from ${tblName} WHERE id=$id`;
+    BBPromise.resolve([
+      dbModel.sequelize.query(sqlUserInfo, {
+        type: dbModel.sequelize.QueryTypes.SELECT,
+        bind: {
+          id: user.id
+        }
+      })
+    ]).spread(function (sqlUserRes) {
+      if (sqlUserRes.length === 0) {
+        res.end(JSON.stringify({
+          code: 203,  // 账号错误
+          msg : regulation.ERRCODE[203]
+        }));
+      } else {
+        sqlUserRes = sqlUserRes[0];
+        // 提取收藏的物品ID '|100001|100002|100003'
+        let collects = [];
+        if(sqlUserRes.collectgoods!=='|'){
+          collects = sqlUserRes.collectgoods.split('|').slice(1).map(x=>parseInt(x));
+        }
+        let result = {
+          id          : sqlUserRes.id,
+          username    : sqlUserRes.username,
+          sex         : sqlUserRes.sex===0? '男':'女',
+          collectNum  : sqlUserRes.collectnum,
+          collectgoods: collects
+        };
+        res.end(JSON.stringify({
+          code: 0,
+          msg : result
+        }))
+      }
+    }).catch(function (err) {
+      res.end(JSON.stringify({
+        code: 110,
+        msg : `ERROR: ${err}`
+      }))
+    });
   }
 });
 
@@ -41,7 +77,8 @@ router.post('/login', function (req, res, next) {
   const pswd = md5.update(password).digest('hex');
 
   const tblName      = 'tbl_users';
-  const sqlQueryUser = `SELECT username, password, priv FROM ${tblName} WHERE username=$username`;
+  const sqlQueryUser = `SELECT id, username, password, priv, sex, 
+        lastlogintime FROM ${tblName} WHERE username=$username`;
   BBPromise.resolve([
     dbModel.sequelize.query(sqlQueryUser, {
       type: dbModel.sequelize.QueryTypes.SELECT,
@@ -50,13 +87,14 @@ router.post('/login', function (req, res, next) {
       }
     })
   ]).spread(function (sqlUserRes) {
-    console.log(sqlUserRes)
+    let item = sqlUserRes[0];
+    console.log(item)
     if (sqlUserRes.length === 0) {
       res.end(JSON.stringify({
         code: 200,  // 账号错误
         msg : regulation.ERRCODE[200]
       }));
-    } else if (pswd != sqlUserRes[0].password) {
+    } else if (pswd != item.password) {
       res.end(JSON.stringify({
         code: 201,  // 密码错误
         msg : regulation.ERRCODE[201]
@@ -73,7 +111,10 @@ router.post('/login', function (req, res, next) {
         }
       }).then(function () {
         req.session.user = {
-          username: username
+          id           : item.id,
+          username     : username,
+          sex          : item.sex,
+          lastlogintime: item.lastlogintime
         };
         res.end(JSON.stringify({
           code: 0,
@@ -116,7 +157,6 @@ router.post('/reg', function (req, res, next) {
       }
     })
   ]).spread(function (sqlUserRes) {
-    res.set('Content-Type', "application/json;charset=utf-8");
     if (sqlUserRes.length !== 0) {
       res.end(JSON.stringify({
         code: 202,  // 账号重复

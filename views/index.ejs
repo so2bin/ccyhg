@@ -29,15 +29,18 @@
                 <div id="user-img-active"  style="display: none"></div>
             </div>
         </div>
+        <!--点击用户信息按钮，如果服务器发生错误，这里提示后返回-->
+        <div id="user-res-tips" style="display: none;"></div>
 
         <div id="list-container">
             <div class="goods-container">
                 <%- include goodinfo.ejs %>
             </div>
         </div>
-        <div id="userInfo" style="display: none;">
-            <%- include user.ejs %>
-        </div>
+
+        <!--用户信息页面-->
+        <%- include user.ejs %>
+
     </div>
 
 </div>

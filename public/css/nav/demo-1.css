@@ -117,6 +117,26 @@ div.navbar {
     border: solid 2px #FFA54F;
 }
 
+/* 用户按钮错误返回提示框 */
+#user-res-tips{
+    left:50%;
+    top: 50%;
+    z-index: 999;
+    position: absolute;
+
+    width: 80px;
+    height: 46px;
+
+    border-radius: 6px;
+    border: solid 1px #e3e3e3;
+
+    font-family:'微软雅黑';
+    font-size: 14px;
+    font-weight:800;
+    color: red;
+    text-align: center;
+    line-height:23px;
+}
 
 
 /* 导航栏切换按钮 */
