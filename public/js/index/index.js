@@ -62,26 +62,91 @@ $(function () {
 
 /*****************************************************************
  /*
- 商品相关js
+ 商品收藏js
  */
+
 $(function () {
-  // 收藏按钮切换与事件调用
+  // 取消收藏按钮切换与事件调用
   $('.btn_good_collect_active').click(function () {
-    $(this).fadeOut(200, function () {
+    let that = $(this);
+    let id = $(this).parent('.good-caption').children('.id').html();
+    // 往服务器发送收藏数据
+    $.ajax({
+      url     : '/uncollect?id=' + id,
+      type    : 'GET',
+      dataType: 'json',
+      success : function (res) {
+        if (res.code == 0) {
+          // 成功
+          that.fadeOut(200, function () {
+          });
+          that.parent().find('.btn_good_collect_inactive').fadeIn(1000, function () {
+          });
+        } else if (res.code==100) {
+          // 没有登陆
+          $('#dialog-center').show();
+        } else {
+          $('#dialog-aftercopy').css('color', 'red').html('取消失败').dialog('open');
+          setTimeout(function () {
+            $('#dialog-aftercopy').dialog('close');
+          }, 1000);
+        }
+      },
+      error   : function () {
 
+      }
     });
-    $(this).parent().find('.btn_good_collect_inactive').fadeIn(1000, function () {
 
-    });
   });
+
+  // 收藏
   $('.btn_good_collect_inactive').click(function () {
-    $(this).fadeOut(500, function () {
+    let that = $(this);
+    let id   = $(this).parent('.good-caption').children('.id').html();
+    $.ajax({
+      url     : '/collect?id=' + id,
+      type    : 'GET',
+      dataType: 'json',
+      success : function (res) {
+        if (res.code == 0) {
+          // 成功
+          that.fadeOut(500, function () {
+          });
+          that.parent().find('.btn_good_collect_active').fadeIn(500, function () {
+          });
+        } else if (res.code == 100) {
+          // 没有登陆
+          $('#dialog-center').show();
+        }
+        else {
+          $('#dialog-aftercopy').css('color', 'red').html('收藏失败').dialog('open');
+          setTimeout(function () {
+            $('#dialog-aftercopy').dialog('close');
+          }, 1000)
+        }
+      },
+      error   : function () {
 
+      }
     });
-    $(this).parent().find('.btn_good_collect_active').fadeIn(500, function () {
 
-    });
-  })
+  });
+
+});
+
+// 提示登陆对话框
+$(function () {
+  $('#dialog-collect-login-tips .dialog-collect-cancel').button();
+  $('#dialog-collect-login-tips .dialog-collect-ok').button();
+
+  $('#dialog-center .dialog-collect-cancel').click(function () {
+    $('#dialog-center').hide();
+  });
+  $('#dialog-center .dialog-collect-ok').click(function () {
+    $('#dialog-center').hide();
+    // 显示登陆界面
+    window.location.href = '/u/login';
+  });
 });
 
 /********************************************
@@ -107,7 +172,7 @@ $(function () {
 
   clipboard1.on('success', function (e) {
     console.log(e.text);
-    $('#dialog-aftercopy').dialog('open');
+    $('#dialog-aftercopy').css('color', 'black').html('复制成功').dialog('open');
     setTimeout(function () {
       $('#dialog-aftercopy').dialog('close');
     }, 300)
@@ -115,7 +180,7 @@ $(function () {
 
   clipboard2.on('success', function (e) {
     console.log(e.text);
-    $('#dialog-aftercopy').dialog('open');
+    $('#dialog-aftercopy').css('color', 'black').html('复制成功').dialog('open');
     setTimeout(function () {
       $('#dialog-aftercopy').dialog('close');
     }, 300)
@@ -218,44 +283,80 @@ $(function () {
       '  <div class="good-info thumbnail">',
       '    <img class="good-img img-rounded" src="good_pic1">',
       '    <div class="good-caption">',
+      '      <div class="id" style="display: none">good_id</div>',
       '      <div class="good-title">good_title</div>',
       '      <div class="good-price">',
-      '      优惠后价格:&nbsp;',
-      '      <span>good_realprice</span>',
-      '    </div>',
-      '    <div class="good-coupon">',
-      '      优惠劵:&nbsp;',
-      '      <span>good_coupon</span>',
-      '    </div>',
-      '    <div class="good-detail-link">',
-      '      <a href="#" class="btn btn-default">详情</a>',
-      '    </div>',
-      '    <div class="buy">',
-      '      <div class="btn_buy1 buy-up" data-clipboard-text="good_step1">步骤1</div>',
-      '      <div class="btn_buy2 buy-up" data-clipboard-text="good_step2">步骤2</div>',
-      '    </div>',
-      '    <div class="good-collect-num">',
-      '      收藏数:&nbsp;',
-      '      <span>good_collect</span>',
-      '    </div>',
-      '    <div class="btn_good_collect_active heart-active"></div>',
-      '    <div class="btn_good_collect_inactive heart-inactive"></div>',
+      '        优惠后:&nbsp;',
+      '        <span>good_realprice</span>',
+      '      </div>',
+      '      <div class="good-coupon">',
+      '        优惠劵:&nbsp;',
+      '        <span>good_coupon</span>',
+      '      </div>',
+      '      <div class="good-detail-link">',
+      '        <a href="#" class="btn btn-default">详情</a>',
+      '      </div>',
+      '      <div class="buy">',
+      '        <div class="btn_buy1 buy-up" data-clipboard-text="good_step1">步骤1</div>',
+      '        <div class="btn_buy2 buy-up" data-clipboard-text="good_step2">步骤2</div>',
+      '      </div>',
+      '      <div class="good-collect-num">',
+      '        收藏数:&nbsp;',
+      '        <span>good_collect</span>',
+      '      </div>',
+      '      <div class="btn_good_collect_active_user heart-active"></div>',
+      '      </div>',
       '  </div>'
     ];
+    // 上面的收藏按钮重新定义了一个lass, 勇于点击,应为目前这个界面与商品界面完全一样, 如果与商品界面公用
+    // 点击事件,则不好区分时那个界面的按钮点击, 用上面的bInUser变量做标示可能日后会有麻烦;
     collectgood     = collectgood.join("");
-    $.each(user.collectgoods, function (idx,good) {
+    $.each(user.collectgoods, function (idx, good) {
       let regGood = collectgood;
+      regGood     = regGood.replace(/good_id/, good.id);
       regGood     = regGood.replace(/good_pic1/, good.pic1);
       regGood     = regGood.replace(/good_title/, good.title);
       regGood     = regGood.replace(/good_realprice/, good.realprice);
       regGood     = regGood.replace(/good_coupon/, good.coupon);
       regGood     = regGood.replace(/good_collect/, good.collect);
-      $('#userInfo .user-collect-list').append(regGood);
+      let curGood = $(regGood);
+      curGood.appendTo($('#userInfo .user-collect-list'))
+      // 监听事件
+      $(curGood.find('.btn_good_collect_active_user').get(0)).click(function () {
+        let that = $(this).parent('.good-caption').children('.id');
+        let id = that.html();
+        // 往服务器发送收藏数据
+        $.ajax({
+          url     : '/uncollect?id=' + id,
+          type    : 'GET',
+          dataType: 'json',
+          success : function (res) {
+            if (res.code == 0) {
+              // 成功 从当前界面删除该元素
+              curGood.remove(that);
+
+            } else if (res.code==100) {
+              // 没有登陆
+              $('#dialog-center').show();
+            } else {
+              $('#dialog-aftercopy').css('color', 'red').html('取消失败').dialog('open');
+              setTimeout(function () {
+                $('#dialog-aftercopy').dialog('close');
+              }, 1000);
+            }
+          },
+          error   : function () {
+
+          }
+        });
+
+      });
     });
   };
 
   //登出按钮初始化
   $('#user-header .user-login-out').button();
+
 });
 
 

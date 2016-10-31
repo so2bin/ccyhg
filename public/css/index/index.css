@@ -54,7 +54,7 @@ div.good-info {
 }
 
 .good-info .good-img {
-    width: 150px; /* 图片显示宽度 */
+    width: 140px; /* 图片显示宽度 */
     height: 100%; /*100px;*/
     margin: 0 0px;
     display: inline;
@@ -63,9 +63,9 @@ div.good-info {
 .good-caption {
     display: inline;
     float: right;
-    width: 220px; /* 物品说明宽度 */
+    width: 55%; /* 物品说明宽度 */
     height: 100px;
-    right: 0px;
+    margin-left: 0px;
 }
 
 #nulldata {
@@ -98,7 +98,7 @@ div.good-info {
 .good-price {
     color: orangered;
     display: inline-block;
-    width: 100px;
+    width: 90px;
     margin: 0 0;
     padding: 0;
 }
@@ -241,7 +241,6 @@ div.good-info {
     right: 20px;
     width: 20px;
     height: 15px; /* 整体的宽度与高度 */
-    display: none;
 }
 
 .heart-inactive:before, .heart-inactive:after {
@@ -339,4 +338,46 @@ div.good-info {
 
 #regForm .sex{
     margin-top:10px;
+}
+
+/***************************************************/
+/* 收藏按钮没有 */
+#dialog-center{
+    position: absolute;
+    top:50%;
+    left:50%;
+}
+#dialog-collect-login-tips{
+    position: relative;
+    top: -100px;
+    left:-50%;
+    height: 100px;
+    width: 200px;
+
+    -webkit-border-radius:6px;
+    -moz-border-radius:6px;
+    border-radius:6px;
+    font-weight: 700;
+    background: rgb(251, 219, 147);
+    color:red;
+}
+#dialog-collect-login-tips .dialog-tips{
+    position: relative;
+    text-align: center;
+    font-size: 15px;
+    top: 15px;
+}
+
+#dialog-collect-login-tips .dialog-btns{
+    position: relative;
+    top: 40px;
+}
+
+#dialog-collect-login-tips .dialog-collect-cancel{
+    position: relative;
+    left:15px;
+}
+#dialog-collect-login-tips .dialog-collect-ok{
+    position: absolute;
+    right: 15px;
 }

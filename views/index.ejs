@@ -51,5 +51,23 @@
 <script src="/js/index/index.js"></script>
 <script src="/plugins/clipboard.min.js"></script>
 
+<script type="text/javascript">
+    $(function () {
+        if($(window).width()>767){
+            // 初始化图片显示高宽
+            $('.good-info').css({
+                height: '200px'
+            })
+            $('.good-info .good-img').css({
+                width:'200px'
+            });
+            // 物品描述文字高宽
+            $('.good-caption').css({
+                width: '300px',
+            });
+        }
+    });
+</script>
+
 <%- include footer.ejs%>
 
