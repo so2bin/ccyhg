@@ -181,11 +181,11 @@ $(function () {
   // 发起ajax请求 获得用户最新信息
   var showUserInfo = function () {
     $.ajax({
-      url     : '/u',
-      type    : 'GET',
-      dataType: 'json',
+      url        : '/u',
+      type       : 'GET',
+      dataType   : 'json',
       contentType: 'charset=utf-8',
-      success : function (res, status, xhr) {
+      success    : function (res, status, xhr) {
         if (res.code != 0) {
           window.location.href = '/u/login';
         } else if (res.code === 0) {
@@ -197,19 +197,61 @@ $(function () {
           initUserInfoWithRes(res.msg);
         }
       },
-      error   : function (err) {
-        $('#user-res-tips').css('display','block').html('Sorry,服务器出错啦!');
+      error      : function (err) {
+        $('#user-res-tips').css('display', 'block').html('Sorry,服务器出错啦!');
         setTimeout(function () {
           window.location.href = '/';
         }, 500);
       }
     })
   };
-  
+
   var initUserInfoWithRes = function (user) {
     $('#userInfo .user-id .value').html(user.id);
     $('#userInfo .user-name .value').html(user.username);
     $('#userInfo .user-sex .value').html(user.sex);
+
+    // 清空原先的收藏数据
+    $('#userInfo .user-collect-list').html("");
+    // 显新的收藏物品
+    let collectgood = [
+      '  <div class="good-info thumbnail">',
+      '    <img class="good-img img-rounded" src="good_pic1">',
+      '    <div class="good-caption">',
+      '      <div class="good-title">good_title</div>',
+      '      <div class="good-price">',
+      '      优惠后价格:&nbsp;',
+      '      <span>good_realprice</span>',
+      '    </div>',
+      '    <div class="good-coupon">',
+      '      优惠劵:&nbsp;',
+      '      <span>good_coupon</span>',
+      '    </div>',
+      '    <div class="good-detail-link">',
+      '      <a href="#" class="btn btn-default">详情</a>',
+      '    </div>',
+      '    <div class="buy">',
+      '      <div class="btn_buy1 buy-up" data-clipboard-text="good_step1">步骤1</div>',
+      '      <div class="btn_buy2 buy-up" data-clipboard-text="good_step2">步骤2</div>',
+      '    </div>',
+      '    <div class="good-collect-num">',
+      '      收藏数:&nbsp;',
+      '      <span>good_collect</span>',
+      '    </div>',
+      '    <div class="btn_good_collect_active heart-active"></div>',
+      '    <div class="btn_good_collect_inactive heart-inactive"></div>',
+      '  </div>'
+    ];
+    collectgood     = collectgood.join("");
+    $.each(user.collectgoods, function (idx,good) {
+      let regGood = collectgood;
+      regGood     = regGood.replace(/good_pic1/, good.pic1);
+      regGood     = regGood.replace(/good_title/, good.title);
+      regGood     = regGood.replace(/good_realprice/, good.realprice);
+      regGood     = regGood.replace(/good_coupon/, good.coupon);
+      regGood     = regGood.replace(/good_collect/, good.collect);
+      $('#userInfo .user-collect-list').append(regGood);
+    });
   };
 
   //登出按钮初始化

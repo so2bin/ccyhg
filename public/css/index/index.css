@@ -47,9 +47,9 @@ div.goods-lists {
 }
 
 div.good-info {
-    height: 160px;
+    height: 150px;
     margin-bottom: 0px; /* 物品列表间隔 */
-    padding-top: 5px;
+    margin-top: 5px;
     position: relative;
 }
 

@@ -21,14 +21,14 @@ router.get('/', function (req, res, next) {
     // 验证用户是否有效
     let tblName      = 'tbl_users';
     let sqlUserInfo = `SELECT * from ${tblName} WHERE id=$id`;
-    BBPromise.resolve([
+    BBPromise.resolve(
       dbModel.sequelize.query(sqlUserInfo, {
         type: dbModel.sequelize.QueryTypes.SELECT,
         bind: {
           id: user.id
         }
       })
-    ]).spread(function (sqlUserRes) {
+    ).then(function (sqlUserRes) {
       if (sqlUserRes.length === 0) {
         res.end(JSON.stringify({
           code: 203,  // 账号错误
@@ -36,24 +36,51 @@ router.get('/', function (req, res, next) {
         }));
       } else {
         sqlUserRes = sqlUserRes[0];
-        // 提取收藏的物品ID '|100001|100002|100003'
-        let collects = [];
-        if(sqlUserRes.collectgoods!=='|'){
-          collects = sqlUserRes.collectgoods.split('|').slice(1).map(x=>parseInt(x));
-        }
+        // 提取收藏的物品ID '|100001|100002|100003|'
+        let resColGoods = [];
         let result = {
           id          : sqlUserRes.id,
           username    : sqlUserRes.username,
           sex         : sqlUserRes.sex===0? '男':'女',
           collectNum  : sqlUserRes.collectnum,
-          collectgoods: collects
+          collectgoods: resColGoods
         };
-        res.end(JSON.stringify({
-          code: 0,
-          msg : result
-        }))
+
+        let gdsId = sqlUserRes.collectgoods.slice(1,-1);
+        // 有收藏物品
+        if(gdsId!==''){
+           gdsId = `("${gdsId.replace(/\|/g,'","')}")`;
+          // collects = sqlUserRes.collectgoods.split('|').slice(1).map(x=>parseInt(x));
+          let tblGoods = 'tbl_store';
+          let sqlCollects = `SELECT * FROM ${tblGoods} WHERE id IN ${gdsId}`;
+
+          dbModel.sequelize.query(sqlCollects, {
+            type: dbModel.sequelize.QueryTypes.SELECT,
+          }).then(function (sqlColRes) {
+            sqlColRes.forEach(function (col) {
+              resColGoods.push(col);
+            });
+            res.end(JSON.stringify({
+              code: 0,
+              msg : result
+            }))
+          }).catch(function (err) {
+            res.end(JSON.stringify({
+              code: 110,
+              msg : `ERROR: ${err}`
+            }))
+          });
+        }
+        // 没有收藏物品
+        else{
+          res.end(JSON.stringify({
+            code: 0,
+            msg : result
+          }))
+        }
       }
     }).catch(function (err) {
+      console.log(err);
       res.end(JSON.stringify({
         code: 110,
         msg : `ERROR: ${err}`

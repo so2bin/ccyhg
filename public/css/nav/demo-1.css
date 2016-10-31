@@ -279,7 +279,7 @@ div.menu.animate #menu-bg{
 */
 
 div.menu.animate {
-    margin-left: -20%; /*动画后menu的位置*/
+    margin-left: -16%; /*动画后menu的位置*/
     opacity: 1;
     -webkit-transition: all 500ms cubic-bezier(0.000, 0.995, 0.990, 1.000);
     -moz-transition: all 500ms cubic-bezier(0.000, 0.995, 0.990, 1.000);
