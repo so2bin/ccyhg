@@ -17,11 +17,11 @@ body {
 
 div.screen.animate {
     left: 50%; /* screen移动后的位置 */
-    -webkit-transition: all 500ms cubic-bezier(0.000, 0.995, 0.990, 1.000);
-    -moz-transition: all 500ms cubic-bezier(0.000, 0.995, 0.990, 1.000);
-    -ms-transition: all 500ms cubic-bezier(0.000, 0.995, 0.990, 1.000);
-    -o-transition: all 500ms cubic-bezier(0.000, 0.995, 0.990, 1.000);
-    transition: all 500ms cubic-bezier(0.000, 0.995, 0.990, 1.000);
+    -webkit-transition: all 500ms cubic-bezier(.25, .1, .25, 1);
+    -moz-transition: all 500ms cubic-bezier(.25, .1, .25, 1);
+    -ms-transition: all 500ms cubic-bezier(.25, .1, .25, 1);
+    -o-transition: all 500ms cubic-bezier(.25, .1, .25, 1);
+    transition: all 500ms cubic-bezier(.25, .1, .25, 1);
 }
 
 /*
@@ -46,6 +46,208 @@ div.navbar {
     position: relative;
 }
 
+
+/* 导航栏切换按钮 */
+
+div.burger {
+    height: 30px;
+    width: 40px;
+    position: absolute;
+    top: 10px;
+    left: 15px;
+    cursor: pointer;
+}
+
+div.burger:focus{
+    background: #ECE8DF;
+}
+
+div.x,
+div.y,
+div.z {
+    position: absolute;
+    margin: 0px 5px;
+    top: 0px;
+    bottom: 0px;
+    height: 3px;
+    width: 26px;
+    background: #FFA54F;
+    border-radius: 2px;
+    -webkit-transition: all 100ms ease-out;
+    -moz-transition: all 100ms ease-out;
+    -ms-transition: all 100ms ease-out;
+    -o-transition: all 100ms ease-out;
+    transition: all 100ms ease-out;
+}
+
+/*三线之间的距离*/
+div.x {
+    top: 3px;
+}
+
+div.y {
+    top: 13px;
+}
+
+div.z {
+    top: 23px;
+}
+
+div.open div.x, div.open div.z {
+    top: 19px;
+    -webkit-transition: all 70ms ease-out;
+    -moz-transition: all 70ms ease-out;
+    -ms-transition: all 70ms ease-out;
+    -o-transition: all 70ms ease-out;
+    transition: all 70ms ease-out;
+}
+
+div.rotate90 {
+    -ms-transform: rotate(90deg);
+    -webkit-transform: rotate(90deg);
+    transform: rotate(90deg);
+    -webkit-transition: all 70ms ease-out;
+    -moz-transition: all 70ms ease-out;
+    -ms-transition: all 70ms ease-out;
+    -o-transition: all 70ms ease-out;
+    transition: all 70ms ease-out;
+}
+
+div.rotate150 {
+    -ms-transform: rotate(150deg);
+    -webkit-transform: rotate(150deg);
+    transform: rotate(150deg);
+    -webkit-transition: all 70ms ease-out;
+    -moz-transition: all 70ms ease-out;
+    -ms-transition: all 70ms ease-out;
+    -o-transition: all 70ms ease-out;
+    transition: all 70ms ease-out;
+}
+
+div.rotate45 {
+    -ms-transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+    -webkit-transition: all 100ms ease-out;
+    -moz-transition: all 100ms ease-out;
+    -ms-transition: all 100ms ease-out;
+    -o-transition: all 100ms ease-out;
+    transition: all 100ms ease-out;
+}
+
+div.rotate135 {
+    -ms-transform: rotate(135deg);
+    -webkit-transform: rotate(135deg);
+    transform: rotate(135deg);
+    -webkit-transition: all 100ms ease-out;
+    -moz-transition: all 100ms ease-out;
+    -ms-transition: all 100ms ease-out;
+    -o-transition: all 100ms ease-out;
+    transition: all 100ms ease-out;
+}
+
+div.menu {
+    height: 100%;
+    width: 100%;
+    margin-right: -60%; /*初始位置*/
+    opacity: 0;
+    position: relative;
+    -webkit-transition: all 500ms cubic-bezier(.25, .1, .25, 1);
+    -moz-transition: all 500ms cubic-bezier(.25, .1, .25, 1);
+    -ms-transition: all 500ms cubic-bezier(.25, .1, .25, 1);
+    -o-transition: all 500ms cubic-bezier(.25, .1, .25, 1);
+    transition: all 500ms cubic-bezier(.25, .1, .25, 1);
+}
+
+/* 图片 暂时不用
+#menu-bg{
+	position: absolute;
+	left: -10px;
+	top: -120px;
+	opacity: 0.3;
+	-webkit-transition: all 500ms cubic-bezier(0.000, 0.995, 0.990, 1.000);
+	-moz-transition: all 500ms cubic-bezier(0.000, 0.995, 0.990, 1.000);
+	-ms-transition: all 500ms cubic-bezier(0.000, 0.995, 0.990, 1.000);
+	-o-transition: all 500ms cubic-bezier(0.000, 0.995, 0.990, 1.000);
+	transition: all 500ms cubic-bezier(0.000, 0.995, 0.990, 1.000);
+}
+div.menu.animate #menu-bg{
+	left:-23px;
+	-webkit-transition: all 500ms cubic-bezier(0.000, 0.995, 0.990, 1.000);
+	-moz-transition: all 500ms cubic-bezier(0.000, 0.995, 0.990, 1.000);
+	-ms-transition: all 500ms cubic-bezier(0.000, 0.995, 0.990, 1.000);
+	-o-transition: all 500ms cubic-bezier(0.000, 0.995, 0.990, 1.000);
+	transition: all 500ms cubic-bezier(0.000, 0.995, 0.990, 1.000);
+}
+*/
+
+div.menu.animate {
+    margin-left: -16%; /*动画后menu的位置*/
+    opacity: 1;
+    -webkit-transition: all 500ms cubic-bezier(.25, .1, .25, 1);
+    -moz-transition: all 500ms cubic-bezier(.25, .1, .25, 1);
+    -ms-transition: all 500ms cubic-bezier(.25, .1, .25, 1);
+    -o-transition: all 500ms cubic-bezier(.25, .1, .25, 1);
+    transition: all 500ms cubic-bezier(.25, .1, .25, 1);
+}
+
+/*menu ul的位置*/
+div.menu ul {
+    margin-top: 50px;
+    position: relative;
+    left: -50px; /*导航以左栏为基准，固定*/
+}
+
+/*每栏的高度*/
+div.menu ul li {
+    list-style: none;
+    padding: 10px 0px;
+    text-align: left;
+    font-size: 20px;
+    width: 99px;
+    border-left-style: solid;
+    border-left-width: 2px;
+    border-left-color: #d6d6d6; /*#74777b;*/
+}
+
+/*导航字体*/
+div.menu ul li a {
+    margin-left: 5px;
+    color: #74777b;
+    text-decoration: none;
+    letter-spacing: 0.8px;
+}
+
+div.menu.animate ul li {
+    margin-left: 30%; /*动画后的位置*/
+    -webkit-transition: all 800ms cubic-bezier(.25, .1, .25, 1);
+    -moz-transition: all 800ms cubic-bezier(.25, .1, .25, 1);
+    -ms-transition: all 800ms cubic-bezier(.25, .1, .25, 1);
+    -o-transition: all 800ms cubic-bezier(.25, .1, .25, 1);
+    transition: all 800ms cubic-bezier(.25, .1, .25, 1);
+}
+
+div.menu.animate li:nth-of-type(1) {
+    transition-delay: 0.0s;
+}
+
+div.menu.animate li:nth-of-type(2) {
+    transition-delay: 0.06s;
+}
+
+div.menu.animate li:nth-of-type(3) {
+    transition-delay: 0.12s;
+}
+
+div.menu.animate li:nth-of-type(4) {
+    transition-delay: 0.18s;
+}
+
+div.menu.animate li:nth-of-type(5) {
+    transition-delay: 0.24s;
+}
+
+/***********************************************************/
 /* 用户信息按钮 */
 #btn-user-img {
     position: absolute;
@@ -136,210 +338,4 @@ div.navbar {
     color: red;
     text-align: center;
     line-height:23px;
-}
-
-
-/* 导航栏切换按钮 */
-
-div.burger {
-    height: 30px;
-    width: 40px;
-    position: absolute;
-    top: 10px;
-    left: 15px;
-    cursor: pointer;
-}
-
-div.x,
-div.y,
-div.z {
-    position: absolute;
-    margin: 0px 5px;
-    top: 0px;
-    bottom: 0px;
-    height: 3px;
-    width: 26px;
-    background: #FFA54F;
-    border-radius: 2px;
-    -webkit-transition: all 100ms ease-out;
-    -moz-transition: all 100ms ease-out;
-    -ms-transition: all 100ms ease-out;
-    -o-transition: all 100ms ease-out;
-    transition: all 100ms ease-out;
-}
-
-div.y.squize {
-    width: 0;
-    -webkit-transition: all 100ms ease-out;
-    -moz-transition: all 100ms ease-out;
-    -ms-transition: all 100ms ease-out;
-    -o-transition: all 100ms ease-out;
-    transition: all 100ms ease-out;
-}
-
-/*三线之间的距离*/
-div.x {
-    top: 3px;
-}
-
-div.y {
-    top: 13px;
-}
-
-div.z {
-    top: 23px;
-}
-
-div.open div.x, div.open div.z {
-    top: 19px;
-    -webkit-transition: all 70ms ease-out;
-    -moz-transition: all 70ms ease-out;
-    -ms-transition: all 70ms ease-out;
-    -o-transition: all 70ms ease-out;
-    transition: all 70ms ease-out;
-}
-
-div.rotate30 {
-    -ms-transform: rotate(30deg);
-    -webkit-transform: rotate(30deg);
-    transform: rotate(30deg);
-    -webkit-transition: all 70ms ease-out;
-    -moz-transition: all 70ms ease-out;
-    -ms-transition: all 70ms ease-out;
-    -o-transition: all 70ms ease-out;
-    transition: all 70ms ease-out;
-}
-
-div.rotate150 {
-    -ms-transform: rotate(150deg);
-    -webkit-transform: rotate(150deg);
-    transform: rotate(150deg);
-    -webkit-transition: all 70ms ease-out;
-    -moz-transition: all 70ms ease-out;
-    -ms-transition: all 70ms ease-out;
-    -o-transition: all 70ms ease-out;
-    transition: all 70ms ease-out;
-}
-
-div.rotate45 {
-    -ms-transform: rotate(45deg);
-    -webkit-transform: rotate(45deg);
-    transform: rotate(45deg);
-    -webkit-transition: all 100ms ease-out;
-    -moz-transition: all 100ms ease-out;
-    -ms-transition: all 100ms ease-out;
-    -o-transition: all 100ms ease-out;
-    transition: all 100ms ease-out;
-}
-
-div.rotate135 {
-    -ms-transform: rotate(135deg);
-    -webkit-transform: rotate(135deg);
-    transform: rotate(135deg);
-    -webkit-transition: all 100ms ease-out;
-    -moz-transition: all 100ms ease-out;
-    -ms-transition: all 100ms ease-out;
-    -o-transition: all 100ms ease-out;
-    transition: all 100ms ease-out;
-}
-
-div.menu {
-    height: 100%;
-    width: 100%;
-    margin-right: -60%; /*初始位置*/
-    opacity: 0;
-    position: relative;
-    -webkit-transition: all 500ms cubic-bezier(0.000, 0.995, 0.990, 1.000);
-    -moz-transition: all 500ms cubic-bezier(0.000, 0.995, 0.990, 1.000);
-    -ms-transition: all 500ms cubic-bezier(0.000, 0.995, 0.990, 1.000);
-    -o-transition: all 500ms cubic-bezier(0.000, 0.995, 0.990, 1.000);
-    transition: all 500ms cubic-bezier(0.000, 0.995, 0.990, 1.000);
-}
-
-/* 图片 暂时不用
-#menu-bg{
-	position: absolute;
-	left: -10px;
-	top: -120px;
-	opacity: 0.3;
-	-webkit-transition: all 500ms cubic-bezier(0.000, 0.995, 0.990, 1.000);
-	-moz-transition: all 500ms cubic-bezier(0.000, 0.995, 0.990, 1.000);
-	-ms-transition: all 500ms cubic-bezier(0.000, 0.995, 0.990, 1.000);
-	-o-transition: all 500ms cubic-bezier(0.000, 0.995, 0.990, 1.000);
-	transition: all 500ms cubic-bezier(0.000, 0.995, 0.990, 1.000);
-}
-div.menu.animate #menu-bg{
-	left:-23px;
-	-webkit-transition: all 500ms cubic-bezier(0.000, 0.995, 0.990, 1.000);
-	-moz-transition: all 500ms cubic-bezier(0.000, 0.995, 0.990, 1.000);
-	-ms-transition: all 500ms cubic-bezier(0.000, 0.995, 0.990, 1.000);
-	-o-transition: all 500ms cubic-bezier(0.000, 0.995, 0.990, 1.000);
-	transition: all 500ms cubic-bezier(0.000, 0.995, 0.990, 1.000);
-}
-*/
-
-div.menu.animate {
-    margin-left: -16%; /*动画后menu的位置*/
-    opacity: 1;
-    -webkit-transition: all 500ms cubic-bezier(0.000, 0.995, 0.990, 1.000);
-    -moz-transition: all 500ms cubic-bezier(0.000, 0.995, 0.990, 1.000);
-    -ms-transition: all 500ms cubic-bezier(0.000, 0.995, 0.990, 1.000);
-    -o-transition: all 500ms cubic-bezier(0.000, 0.995, 0.990, 1.000);
-    transition: all 500ms cubic-bezier(0.000, 0.995, 0.990, 1.000);
-}
-
-/*menu ul的位置*/
-div.menu ul {
-    margin-top: 50px;
-    position: relative;
-    left: -50px; /*导航以左栏为基准，固定*/
-}
-
-/*每栏的高度*/
-div.menu ul li {
-    list-style: none;
-    padding: 10px 0px;
-    text-align: left;
-    font-size: 20px;
-    width: 99px;
-    border-left-style: solid;
-    border-left-width: 2px;
-    border-left-color: #d6d6d6; /*#74777b;*/
-}
-
-/*导航字体*/
-div.menu ul li a {
-    margin-left: 5px;
-    color: #74777b;
-    text-decoration: none;
-    letter-spacing: 0.8px;
-}
-
-div.menu.animate ul li {
-    margin-left: 30%; /*动画后的位置*/
-    -webkit-transition: all 800ms cubic-bezier(0.000, 0.995, 0.990, 1.000);
-    -moz-transition: all 800ms cubic-bezier(0.000, 0.995, 0.990, 1.000);
-    -ms-transition: all 800ms cubic-bezier(0.000, 0.995, 0.990, 1.000);
-    -o-transition: all 800ms cubic-bezier(0.000, 0.995, 0.990, 1.000);
-    transition: all 800ms cubic-bezier(0.000, 0.995, 0.990, 1.000);
-}
-
-div.menu.animate li:nth-of-type(1) {
-    transition-delay: 0.0s;
-}
-
-div.menu.animate li:nth-of-type(2) {
-    transition-delay: 0.06s;
-}
-
-div.menu.animate li:nth-of-type(3) {
-    transition-delay: 0.12s;
-}
-
-div.menu.animate li:nth-of-type(4) {
-    transition-delay: 0.18s;
-}
-
-div.menu.animate li:nth-of-type(5) {
-    transition-delay: 0.24s;
 }
