@@ -8,8 +8,6 @@
  初始时第一个被激活
  */
 $(function () {
-  var curLink = $('.menu ul li')[0];
-
   if ('ontouchstart' in window) {
     var click = 'touchstart';
   } else {
@@ -22,13 +20,12 @@ $(function () {
       closeMenu();
     }
   });
-  $('div.menu ul li').on(click, function (e) {
-    $(curLink).removeClass('active');
-    e.preventDefault();
-    closeMenu();
-    $(this).addClass('active');
-    curLink = $(this);
-  });
+  // $('div.menu ul li').on(click, function (e) {
+  //   $('div.menu ul li.active').removeClass('active');
+  //   e.preventDefault();
+  //   closeMenu();
+  //   $(this).addClass('active');
+  // });
   function openMenu() {
     $('div.burger').addClass('open');
     $('div.y').fadeOut(100);
@@ -58,6 +55,31 @@ $(function () {
       $('div.x, div.z').removeClass('collapse');
     }, 70);
   }
+
+  /********************************************************
+   *  侧边栏导航按钮 点击后展开子类
+   */
+  // 一级导航栏点击事件由一级ul代理
+  $('div.menu>ul').on('click', '.mainKey', function (e) {
+    e.stopPropagation();
+    $('div.menu ul li.active').removeClass('active');
+    $(this).addClass('active');
+    // 如果当前li下面还有ul,即子导航栏,则打开导航栏, 否则打开链接
+    if($(this).has('ul').length){
+      $(this).children('ul').toggle(100);
+    }else{
+      closeMenu();
+    }
+  });
+
+  // 二级导航栏点击事件由二级ul代理
+  $('.mainKey>ul').on('click', '.subKey1', function (e) {
+    e.stopPropagation();
+    console.log($(this).text())
+    // 获得主类的选项值
+    console.log($(e.delegateTarget).prev().text())
+  });
+
 });
 
 /*****************************************************************
@@ -68,8 +90,8 @@ $(function () {
 $(function () {
   // 取消收藏按钮切换与事件调用
   $('.btn_good_collect_active').click(function () {
-    let that = $(this);
-    let id = $(this).parent('.good-caption').children('.id').html();
+    var that = $(this);
+    var id = $(this).parent('.good-caption').children('.id').html();
     // 往服务器发送收藏数据
     $.ajax({
       url     : '/uncollect?id=' + id,
@@ -80,7 +102,7 @@ $(function () {
           // 成功
           that.fadeOut(200, function () {
           });
-          that.parent().find('.btn_good_collect_inactive').fadeIn(1000, function () {
+          that.parent().find('.btn_good_collect_inactive').fadeIn(0, function () {
           });
         } else if (res.code==100) {
           // 没有登陆
@@ -101,8 +123,8 @@ $(function () {
 
   // 收藏
   $('.btn_good_collect_inactive').click(function () {
-    let that = $(this);
-    let id   = $(this).parent('.good-caption').children('.id').html();
+    var that = $(this);
+    var id   = $(this).parent('.good-caption').children('.id').html();
     $.ajax({
       url     : '/collect?id=' + id,
       type    : 'GET',
@@ -110,9 +132,9 @@ $(function () {
       success : function (res) {
         if (res.code == 0) {
           // 成功
-          that.fadeOut(500, function () {
+          that.fadeOut(0, function () {
           });
-          that.parent().find('.btn_good_collect_active').fadeIn(500, function () {
+          that.parent().find('.btn_good_collect_active').fadeIn(300, function () {
           });
         } else if (res.code == 100) {
           // 没有登陆
@@ -154,8 +176,8 @@ $(function () {
  */
 $(function () {
   // Clipboard.js 剪贴板插件
-  let clipboard1 = new Clipboard('.btn_buy1');
-  let clipboard2 = new Clipboard('.btn_buy2');
+  var clipboard1 = new Clipboard('.btn_buy1');
+  var clipboard2 = new Clipboard('.btn_buy2');
 
   // 复制完成提示框,跳转对话框
   $('#dialog-aftercopy').dialog({
@@ -220,7 +242,7 @@ var USER = null;
 
 $(function () {
   // user 按钮
-  let bInUser = false;   // 个人信息界面切换标记
+  var bInUser = false;   // 个人信息界面切换标记
   $('#btn-user-img').click(function () {
     if (!bInUser) {  // 当前为商品界面，切换到用户界面
       bInUser = !bInUser;
@@ -279,7 +301,7 @@ $(function () {
     // 清空原先的收藏数据
     $('#userInfo .user-collect-list').html("");
     // 显新的收藏物品
-    let collectgood = [
+    var collectgood = [
       '  <div class="good-info thumbnail">',
       '    <img class="good-img img-rounded" src="good_pic1">',
       '    <div class="good-caption">',
@@ -308,19 +330,19 @@ $(function () {
     // 点击事件,则不好区分时那个界面的按钮点击, 用上面的bInUser变量做标示可能日后会有麻烦;
     collectgood     = collectgood.join("");
     $.each(user.collectgoods, function (idx, good) {
-      let regGood = collectgood;
+      var regGood = collectgood;
       regGood     = regGood.replace(/good_id/, good.id);
       regGood     = regGood.replace(/good_pic1/, good.pic1);
       regGood     = regGood.replace(/good_title/, good.title);
       regGood     = regGood.replace(/good_realprice/, good.realprice);
       regGood     = regGood.replace(/good_coupon/, good.coupon);
       regGood     = regGood.replace(/good_collect/, good.collect);
-      let curGood = $(regGood);
-      curGood.appendTo($('#userInfo .user-collect-list'))
+      var curGood = $(regGood);
+      curGood.appendTo($('#userInfo .user-collect-list'));
       // 监听事件
       $(curGood.find('.btn_good_collect_active_user').get(0)).click(function () {
-        let that = $(this).parent('.good-caption').children('.id');
-        let id = that.html();
+        var that = $(this).parent('.good-caption').children('.id');
+        var id = that.html();
         // 往服务器发送收藏数据
         $.ajax({
           url     : '/uncollect?id=' + id,
@@ -329,8 +351,11 @@ $(function () {
           success : function (res) {
             if (res.code == 0) {
               // 成功 从当前界面删除该元素
-              curGood.remove(that);
-
+              curGood.remove();
+              // 在商品界面中取消收藏
+              var idDiv = $('#list-container .goods-lists .id:contains('+ id +')').parent('.good-caption');
+              idDiv.children('.btn_good_collect_active').css('display','none');
+              idDiv.children('.btn_good_collect_inactive').css('display','block');
             } else if (res.code==100) {
               // 没有登陆
               $('#dialog-center').show();
