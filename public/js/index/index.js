@@ -75,9 +75,14 @@ $(function () {
   // 二级导航栏点击事件由二级ul代理
   $('.mainKey>ul').on('click', '.subKey1', function (e) {
     e.stopPropagation();
-    console.log($(this).text())
+    var subKey1=$(this).text();
     // 获得主类的选项值
-    console.log($(e.delegateTarget).prev().text())
+    var mainKey=$(e.delegateTarget).prev().html();
+    console.log(mainKey)
+    $(e.delegateTarget).children('.menu-subkey-selected')
+      .toggleClass('menu-subkey-selected');
+    $(this).toggleClass('menu-subkey-selected');
+
   });
 
 });

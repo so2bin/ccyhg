@@ -1,6 +1,7 @@
 * {
     margin: 0px;
     padding: 0px;
+    -webkit-overflow-scrolling : touch;
 }
 
 body {
@@ -8,11 +9,6 @@ body {
     width: 100%;
     height: 100%;
     font: 12px "Open Sans", sans-serif;
-}
-
-.active {
-    background-color: #d6d6d6; /*#fcf8e3;*/
-    border-radius: 0px 5px 10px 0px;
 }
 
 div.screen.animate {
@@ -199,10 +195,15 @@ div.menu > ul {
     position: relative;
     left: -50px; /*导航以左栏为基准，固定*/
 }
+.active {
+    background-color: #d6d6d6; /*#fcf8e3;*/
+    border-radius: 0px 5px 10px 0px;
+}
 
 /**一级导航**/
 /*每栏的高度*/
 div.menu > ul > li {
+    position: relative;
     list-style: none;
     padding: 5px 0px;
     text-align: left;
@@ -222,16 +223,55 @@ div.menu > ul > li > a {
 }
 
 /**二级导航**/
+.mainKey > ul{
+    position: absolute;
+    width: 130px;
+    height: 100px;
+    background: #d6d6d6;
+    top:0px;
+    left:40px;
+    padding-top: 6px;
+    border-radius: 0 6px 6px 6px;
+}
+.mainKey > ul > li:first-child{
+    margin-bottom: 10px;
+}
+.mainKey > ul > li:first-child > a:after{
+    content: "";
+    height: 1px;
+    width: 130px;
+    background-color: #0e90d2;
+    position: absolute;
+    left: 0px;
+    top: 29px;
+}
 
-div.menu > ul > li > ul > li{
+.subKey1{
     list-style: none;
     padding: 0 0px;
-    text-align: left;
     font-size: 14px;
+
+    width: 30px;
+    /*height: 20px;*/
+    line-height:20px;
+    text-align: center;
+
+    float: left;
+    margin-left: 0;
 }
-div.menu > ul > li > ul > li > a{
+.subKey1 > a{
     text-decoration: none;
     color: #5c79c0;
+}
+
+.menu-subkey-selected{
+    color: #ff2d75;
+    border:1px dashed #ff2d75;
+    border-radius: 4px;
+    background-color: rgba(255, 45, 117, 0.36);
+}
+.menu-subkey-selected>a{
+    color: #0e90d2;
 }
 
 /**********动画************/
