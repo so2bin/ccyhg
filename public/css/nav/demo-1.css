@@ -35,7 +35,7 @@ div.screen.animate {
 
 /****** 导航条 ********/
 div.navbar {
-    height: 50px;
+    height: 37px;
     margin-bottom: 5px;
     background: #ECE8DF;
     position: relative;
@@ -48,7 +48,7 @@ div.burger {
     height: 30px;
     width: 40px;
     position: absolute;
-    top: 10px;
+    top: 4px;
     left: 15px;
     cursor: pointer;
 }
@@ -89,7 +89,7 @@ div.z {
 }
 
 div.open div.x, div.open div.z {
-    top: 19px;
+    top: 13px;
     -webkit-transition: all 70ms ease-out;
     -moz-transition: all 70ms ease-out;
     -ms-transition: all 70ms ease-out;
@@ -314,7 +314,7 @@ div.menu.animate li:nth-of-type(5) {
 /* 用户信息按钮 */
 #btn-user-img {
     position: absolute;
-    top: 10px;
+    top: 2px;
     right: 15px;
     width: 32px;
     height: 32px;

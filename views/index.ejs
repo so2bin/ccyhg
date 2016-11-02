@@ -60,10 +60,13 @@
 <script type="text/javascript" src="/jquery-ui/jquery-ui.js"></script>
 
 <script src="/js/index/index.js"></script>
-<script src="/plugins/clipboard.min.js"></script>
+<script src="/plugins/clipboard.min.js" defer></script>
 
 <script type="text/javascript">
     $(function () {
+        $('div.goods-lists').css('height',function () {
+            return $(window).height()- 37;
+        });
         if($(window).width()>767){
             // 初始化图片显示高宽
             $('.good-info').css({

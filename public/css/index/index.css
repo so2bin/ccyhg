@@ -290,6 +290,7 @@ div.good-info {
 
 #loginForm h2, #regForm h2{
     margin: 20px 0 20px 0;
+    color: #454545;
 }
 
 #form-login, #form-reg{
@@ -304,16 +305,19 @@ div.good-info {
     border-radius: 6px;
     -moz-border-radius: 6px;
     -webkit-border-radius: 6px;
-    background-color: #efefef;
+    background-color: rgb(255, 251, 255);
+    border: 1px solid rgb(255, 251, 240);
 }
 
 #form-login input:focus,
 #form-reg input:focus{
-    border: solid 2px orange;
+    border: dashed 1px #ff5ad7;
+    border-radius: 6px;
 }
 
 #form-login span, #form-reg span{
     font-size: 16px;
+    color: #454545;
 }
 
 #loginForm .form-btn,

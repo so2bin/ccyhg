@@ -106,7 +106,7 @@ router.get('/', function (req, res, next) {
 router.get('/collect', function (req, res, next) {
   var user = req.session.user;
   if (!user) {
-    res.end(JSON.stringify({
+    return res.end(JSON.stringify({
       code: 100,  // 没有登陆
       msg : ruleConfig.ERRCODE[100]
     }));
@@ -124,7 +124,7 @@ router.get('/collect', function (req, res, next) {
   }).then(function (sqlRes) {
     if (sqlRes.length == 0) {
       // 物品失效(数据空中已经删除)
-      res.end(JSON.stringify({
+      return res.end(JSON.stringify({
         code: 120,
         msg : ruleConfig.ERRCODE[120]
       }))
@@ -139,12 +139,12 @@ router.get('/collect', function (req, res, next) {
           userId: user.id
         }
       }).then(function () {
-        res.end(JSON.stringify({
+        return res.end(JSON.stringify({
           code: 0,
           msg : '收藏成功'
         }))
       }).catch(function (err) {
-        res.end(JSON.stringify({
+        return res.end(JSON.stringify({
           code: 110,
           msg : '收藏失败'
         }))
@@ -152,7 +152,7 @@ router.get('/collect', function (req, res, next) {
     }
   }).catch(function (err) {
     console.log(err)
-    res.end(JSON.stringify({
+    return res.end(JSON.stringify({
       code: 110,
       msg : '收藏失败'
     }))

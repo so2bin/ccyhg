@@ -13,7 +13,8 @@ $(function () {
   } else {
     var click = 'click';
   }
-  $('div.burger').on(click, function () {
+  $('div.burger').on(click, function (e) {
+    e.stopPropagation();
     if (!$(this).hasClass('open')) {
       openMenu();
     } else {
@@ -42,6 +43,9 @@ $(function () {
   }
 
   function closeMenu() {
+    // 关闭打开的下拉导航
+    $('div.menu>ul>li.active>ul').css('display','none');
+    //关闭侧边导航
     $('div.screen, .menu').removeClass('animate');
     $('div.y').fadeIn(150);
     $('div.burger').removeClass('open');
@@ -67,7 +71,9 @@ $(function () {
   // 一级导航栏点击事件由一级ul代理
   $('div.menu>ul').on('click', '.mainKey', function (e) {
     e.stopPropagation();
-    $('div.menu ul li.active').removeClass('active');
+    var curActive = $('div.menu>ul>li.active');
+    curActive.removeClass('active');
+    curActive.children('ul').css('display','none');
     $(this).addClass('active');
     // 如果当前li下面还有ul,即子导航栏,则打开导航栏, 否则打开链接
     if ($(this).has('ul').length) {
@@ -111,10 +117,8 @@ $(function () {
       success : function (res) {
         if (res.code == 0) {
           // 成功
-          that.fadeOut(200, function () {
-          });
-          that.parent().find('.btn_good_collect_inactive').fadeIn(0, function () {
-          });
+          that.fadeOut(200);
+          that.parent().find('.btn_good_collect_inactive').fadeIn(0);
         } else if (res.code == 100) {
           // 没有登陆
           $('#dialog-center').show();
@@ -143,10 +147,8 @@ $(function () {
       success : function (res) {
         if (res.code == 0) {
           // 成功
-          that.fadeOut(0, function () {
-          });
-          that.parent().find('.btn_good_collect_active').fadeIn(300, function () {
-          });
+          that.fadeOut(0);
+          that.parent().find('.btn_good_collect_active').fadeIn(300);
         } else if (res.code == 100) {
           // 没有登陆
           $('#dialog-center').show();
