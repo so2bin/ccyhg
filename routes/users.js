@@ -5,6 +5,7 @@ const crypto        = require('crypto');
 const dbModel       = require('../db/index');
 const datefunctions = require('../tools/datefunction.js');
 const regulation    = require('../config/regulations.js');
+const navConfig  = require('../config/selectConfig');
 
 /*******************************************
  * 返回个人信息
@@ -82,9 +83,8 @@ router.get('/', function (req, res, next) {
     }).catch(function (err) {
       console.log(err);
       res.end(JSON.stringify({
-        code: 110,
-        msg : `ERROR: ${err}`
-      }))
+        code: 101,
+        msg: 'ERROR' + err}))
     });
   }
 });
@@ -93,7 +93,10 @@ router.get('/', function (req, res, next) {
  * 处理登陆
  */
 router.get('/login', function (req, res, next) {
-  res.render('login', {});
+  res.render('login', {
+    title: 'CC优惠购',
+    navJson: navConfig.selects
+  });
 });
 
 router.post('/login', function (req, res, next) {
@@ -115,7 +118,7 @@ router.post('/login', function (req, res, next) {
     })
   ]).spread(function (sqlUserRes) {
     let item = sqlUserRes[0];
-    console.log(item)
+    console.log(item);
     if (sqlUserRes.length === 0) {
       res.end(JSON.stringify({
         code: 200,  // 账号错误
@@ -223,6 +226,16 @@ router.post('/reg', function (req, res, next) {
       msg : `ERROR: ${err}`
     }))
   });
+});
+
+/**
+ * 处理登出
+ */
+router.get('/loginout',function (req, res, next) {
+  if(req.session.user){
+    req.session.user = null;
+  }
+  res.end(JSON.stringify({code:0, msg:'登出成功'}));
 });
 
 module.exports = router;

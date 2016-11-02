@@ -56,6 +56,11 @@ $(function () {
     }, 70);
   }
 
+  /***************************
+   * 当页面刷新加载时, 获得当前页面筛选条件, 并激活筛选条件DOM颜色
+   */
+  console.log(window.location.href)
+
   /********************************************************
    *  侧边栏导航按钮 点击后展开子类
    */
@@ -65,24 +70,25 @@ $(function () {
     $('div.menu ul li.active').removeClass('active');
     $(this).addClass('active');
     // 如果当前li下面还有ul,即子导航栏,则打开导航栏, 否则打开链接
-    if($(this).has('ul').length){
+    if ($(this).has('ul').length) {
       $(this).children('ul').toggle(100);
-    }else{
+    } else {
       closeMenu();
+      window.location.href = '/?mainKey=' + $(this).text();
     }
   });
 
   // 二级导航栏点击事件由二级ul代理
   $('.mainKey>ul').on('click', '.subKey1', function (e) {
     e.stopPropagation();
-    var subKey1=$(this).text();
+    var subKey1 = $(this).text();
     // 获得主类的选项值
-    var mainKey=$(e.delegateTarget).prev().html();
-    console.log(mainKey)
+    var mainKey = $(e.delegateTarget).prev().text();
     $(e.delegateTarget).children('.menu-subkey-selected')
-      .toggleClass('menu-subkey-selected');
+    .toggleClass('menu-subkey-selected');
     $(this).toggleClass('menu-subkey-selected');
-
+    // 刷新页面
+    window.location.href = '/?mainKey=' + mainKey + '&subKey1=' + subKey1;
   });
 
 });
@@ -96,7 +102,7 @@ $(function () {
   // 取消收藏按钮切换与事件调用
   $('.btn_good_collect_active').click(function () {
     var that = $(this);
-    var id = $(this).parent('.good-caption').children('.id').html();
+    var id   = $(this).parent('.good-caption').children('.id').html();
     // 往服务器发送收藏数据
     $.ajax({
       url     : '/uncollect?id=' + id,
@@ -109,7 +115,7 @@ $(function () {
           });
           that.parent().find('.btn_good_collect_inactive').fadeIn(0, function () {
           });
-        } else if (res.code==100) {
+        } else if (res.code == 100) {
           // 没有登陆
           $('#dialog-center').show();
         } else {
@@ -239,7 +245,7 @@ $(function () {
 
 /*****************************************************************
  *
- * 用户信息按钮
+ * 用户信息, 登出按钮
  *
  */
 // 保存用户信息
@@ -279,6 +285,7 @@ $(function () {
       contentType: 'charset=utf-8',
       success    : function (res, status, xhr) {
         if (res.code != 0) {
+          bInUser = false;    // 刷新后无效,需要修改  // TODO
           window.location.href = '/u/login';
         } else if (res.code === 0) {
           // 切换到个人信息页面
@@ -291,6 +298,7 @@ $(function () {
       },
       error      : function (err) {
         $('#user-res-tips').css('display', 'block').html('Sorry,服务器出错啦!');
+        bInUser = true;
         setTimeout(function () {
           window.location.href = '/';
         }, 500);
@@ -333,7 +341,7 @@ $(function () {
     ];
     // 上面的收藏按钮重新定义了一个lass, 勇于点击,应为目前这个界面与商品界面完全一样, 如果与商品界面公用
     // 点击事件,则不好区分时那个界面的按钮点击, 用上面的bInUser变量做标示可能日后会有麻烦;
-    collectgood     = collectgood.join("");
+    collectgood = collectgood.join("");
     $.each(user.collectgoods, function (idx, good) {
       var regGood = collectgood;
       regGood     = regGood.replace(/good_id/, good.id);
@@ -347,7 +355,7 @@ $(function () {
       // 监听事件
       $(curGood.find('.btn_good_collect_active_user').get(0)).click(function () {
         var that = $(this).parent('.good-caption').children('.id');
-        var id = that.html();
+        var id   = that.html();
         // 往服务器发送收藏数据
         $.ajax({
           url     : '/uncollect?id=' + id,
@@ -358,10 +366,10 @@ $(function () {
               // 成功 从当前界面删除该元素
               curGood.remove();
               // 在商品界面中取消收藏
-              var idDiv = $('#list-container .goods-lists .id:contains('+ id +')').parent('.good-caption');
-              idDiv.children('.btn_good_collect_active').css('display','none');
-              idDiv.children('.btn_good_collect_inactive').css('display','block');
-            } else if (res.code==100) {
+              var idDiv = $('#list-container .goods-lists .id:contains(' + id + ')').parent('.good-caption');
+              idDiv.children('.btn_good_collect_active').css('display', 'none');
+              idDiv.children('.btn_good_collect_inactive').css('display', 'block');
+            } else if (res.code == 100) {
               // 没有登陆
               $('#dialog-center').show();
             } else {
@@ -382,6 +390,24 @@ $(function () {
 
   //登出按钮初始化
   $('#user-header .user-login-out').button();
+  $('#user-header .user-login-out').click(function () {
+    $.ajax({
+      url        : '/u/loginout',
+      type       : 'GET',
+      dataType   : 'json',
+      contentType: 'charset=utf-8',
+      success    : function () {
+        bInUser = !bInUser;
+        window.location.href = '/';
+      },
+      error      : function (err) {
+        $('#user-res-tips').css('display', 'block').html('Sorry,服务器出错啦!');
+        setTimeout(function () {
+          window.location.href = '/';
+        }, 500);
+      }
+    })
+  })
 
 });
 

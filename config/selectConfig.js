@@ -5,7 +5,8 @@ module.exports.selects = {
     '男装':{
         '上衣':null,
         '下衣':null,
-        '袜子':null
+        '袜子':null,
+        '其它':null
     },
     '女装':{
         '上衣':null,

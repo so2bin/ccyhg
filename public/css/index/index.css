@@ -29,6 +29,7 @@ div.screen #list-container {
     height: 100%;
     padding: 0 0px;
     margin: 0 0px;
+    -webkit-overflow-scrolling : touch;
 }
 
 div.goods-container {

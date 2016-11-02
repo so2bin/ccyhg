@@ -1,7 +1,6 @@
 * {
     margin: 0px;
     padding: 0px;
-    -webkit-overflow-scrolling : touch;
 }
 
 body {
@@ -232,9 +231,11 @@ div.menu > ul > li > a {
     left:40px;
     padding-top: 6px;
     border-radius: 0 6px 6px 6px;
+    z-index: 99;
 }
 .mainKey > ul > li:first-child{
     margin-bottom: 10px;
+    margin-top: -2px;
 }
 .mainKey > ul > li:first-child > a:after{
     content: "";
@@ -243,25 +244,30 @@ div.menu > ul > li > a {
     background-color: #0e90d2;
     position: absolute;
     left: 0px;
-    top: 29px;
+    top: 32px;
 }
 
 .subKey1{
+    display: inline-block;
     list-style: none;
-    padding: 0 0px;
     font-size: 14px;
 
-    width: 30px;
-    /*height: 20px;*/
-    line-height:20px;
+    width: 40px;
+    height: 24px;
+    line-height:24px;
     text-align: center;
-
-    float: left;
-    margin-left: 0;
 }
 .subKey1 > a{
+    display: inline-block;
     text-decoration: none;
     color: #5c79c0;
+}
+
+.list-all{
+    display: inline-block;
+    width: 98%;
+    height: 24px;
+    line-height: 24px;
 }
 
 .menu-subkey-selected{
@@ -275,7 +281,7 @@ div.menu > ul > li > a {
 }
 
 /**********动画************/
-div.menu.animate ul li {
+div.menu.animate > ul > li {
     margin-left: 30%; /*动画后的位置*/
     -webkit-transition: all 800ms cubic-bezier(.25, .1, .25, 1);
     -moz-transition: all 800ms cubic-bezier(.25, .1, .25, 1);

@@ -8,17 +8,61 @@ const navConfig  = require('../config/selectConfig');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-  var tblName = 'tbl_store';
-  var sqlData = `SELECT id, ftime, type, subtype1, subtype2, title,
+  const mainKey = req.query.mainKey;
+  const subKey1 = req.query.subKey1;
+  const subKey2 = req.query.subKey2;
+
+  let tblName    = 'tbl_store';
+  let mainKeySel = "", subKey1Sel = "", subKey2Sel = "";
+  switch (mainKey) {
+    case undefined:
+      mainKeySel = '1=1';
+      break;
+    case '最新':
+      mainKeySel = '1=1';
+      break;
+    case '火爆':
+      mainKeySel = '1=1';
+      break;
+    default:
+      mainKeySel = 'type=$mainKey';
+      break;
+  }
+  switch (subKey1) {
+    case undefined:
+    case '全部':
+      subKey1Sel = '1=1';
+      break;
+    default:
+      subKey1Sel = 'subtype1=$subKey1';
+      break;
+  }
+  switch (subKey2) {
+    case undefined:
+    case '全部':
+      subKey2Sel = '1=1';
+      break;
+    default:
+      subKey2Sel = 'subtype2=$subKey2';
+      break;
+  }
+
+  let sqlData = `SELECT id, ftime, type, subtype1, subtype2, title,
     step1, step2, realprice, coupon, collect, pic1, pic2, pic3
-    FROM ${tblName} ORDER BY ftime`;
+    FROM ${tblName} WHERE ${mainKeySel} AND ${subKey1Sel}
+    AND ${subKey1Sel} ORDER BY ftime`;
   // 增加用户信息查询,用于判断用户是否收藏有当前的物品
   let sqlUser = `SELECT * FROM tbl_users WHERE id=$id`;
   let id      = req.session.user ? req.session.user.id : -1;  // -1即差不多用户
 
   BBPromise.resolve([
     dbStore.sequelize.query(sqlData, {
-      type: dbStore.sequelize.QueryTypes.SELECT
+      type: dbStore.sequelize.QueryTypes.SELECT,
+      bind: {
+        mainKey: mainKey,
+        subKey1: subKey1,
+        subKey2: subKey2
+      }
     }),
     dbStore.sequelize.query(sqlUser, {
       type: dbStore.sequelize.QueryTypes.SELECT,
@@ -45,10 +89,17 @@ router.get('/', function (req, res, next) {
       }
       result.push(itm);
     });
-    res.render('index', {title: 'CC优惠购', items: result, navJson: navConfig.selects});
+    res.render('index', {
+      title: 'CC优惠购',
+      items: result,
+      navJson: navConfig.selects
+    });
   }).catch(function (err) {
     console.log(err);
-    res.end('ERROR' + err)
+    res.end(JSON.stringify({
+      code: 101,
+      msg: 'ERROR' + err
+    }))
   });
 });
 

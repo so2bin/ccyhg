@@ -7,14 +7,15 @@
     <div class="menu">
         <img id="menu-bg" src="" />
         <ul>
-            <li class="active mainKey"><a href="#">最新推荐</a></li>
+            <li class="active mainKey"><a>最新</a></li>
+            <li class="mainKey"><a>火爆</a></li>
             <% for(let m_key in navJson){ %>
             <!-- 一级分类 -->
             <li class="mainKey"><a><%- m_key %></a>
                 <!--二级分类-->
                 <% if(navJson[m_key]){ %>
                 <ul style="display: none;">
-                    <li class="subKey1"><a>全部</a></li>
+                    <li class="subKey1 list-all"><a>全部</a></li>
                     <% for(let s_key1 in navJson[m_key]){ %>
                     <li class="subKey1"><a><%- s_key1 %></a></li>
                     <% } %>
