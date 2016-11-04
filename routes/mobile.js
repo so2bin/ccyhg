@@ -10,4 +10,9 @@ router.get('/', function(req, res) {
     res.sendFile(path.join(__dirname,'../public/html/mob.html'));
 });
 
+/** 测试 */
+router.get('/test', function(req, res) {
+    res.sendFile(path.join(__dirname,'../public/html/test.html'));
+});
+
 module.exports = router;

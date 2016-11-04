@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <a id="openApp">打开淘宝客户端</a>
+</head>
+<body>
+
+<script type="text/javascript">
+//    document.getElementById('openApp').onclick = function(e){
+//        // 通过iframe的方式试图打开APP，如果能正常打开，会直接切换到APP，并自动阻止js其他行为
+//
+//        var ifr = document.createElement('iframe');
+//        ifr.src = 'taobao://';//打开app的协议，有app同事提供
+//        ifr.style.display = 'none';
+//        document.body.appendChild(ifr);
+//        window.setTimeout(function(){
+//            document.body.removeChild(ifr);
+//            window.location.href = "http://www.ccyhgo.cn";
+//        },2000)
+//    };
+
+    document.getElementById('openApp').onclick = function(e){
+        window.location.href = "taobao://";
+        window.setTimeout(function(){
+            window.location.href = "http://www.ccyhgo.cn";
+        },2000)
+    };
+</script>
+
+</body>
+</html>

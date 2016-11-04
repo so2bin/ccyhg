@@ -63,7 +63,7 @@ $(function () {
   /***************************
    * 当页面刷新加载时, 获得当前页面筛选条件, 并激活筛选条件DOM颜色
    */
-  console.log(window.location.href)
+  console.log(window.location.href);
 
   /********************************************************
    *  侧边栏导航按钮 点击后展开子类
@@ -106,7 +106,7 @@ $(function () {
 
 $(function () {
   // 取消收藏按钮切换与事件调用
-  $('.btn_good_collect_active').click(function () {
+  $('.goods-lists').on('click', '.btn_good_collect_active', function (e) {
     var that = $(this);
     var id   = $(this).parent('.good-caption').children('.id').html();
     // 往服务器发送收藏数据
@@ -133,11 +133,10 @@ $(function () {
 
       }
     });
-
   });
 
   // 收藏
-  $('.btn_good_collect_inactive').click(function () {
+  $('.goods-lists').on('click', '.btn_good_collect_inactive', function (e) {
     var that = $(this);
     var id   = $(this).parent('.good-caption').children('.id').html();
     $.ajax({
@@ -164,7 +163,6 @@ $(function () {
 
       }
     });
-
   });
 
 });
@@ -210,7 +208,10 @@ $(function () {
     $('#dialog-aftercopy').css('color', 'black').html('复制成功').dialog('open');
     setTimeout(function () {
       $('#dialog-aftercopy').dialog('close');
-    }, 300)
+    }, 300);
+
+    // 打开淘宝APP
+    window.location.href = "taobao://";
   });
 
   clipboard2.on('success', function (e) {
@@ -218,31 +219,24 @@ $(function () {
     $('#dialog-aftercopy').css('color', 'black').html('复制成功').dialog('open');
     setTimeout(function () {
       $('#dialog-aftercopy').dialog('close');
-    }, 300)
+    }, 300);
+
+    // 打开淘宝APP
+    window.location.href = "taobao://";
   });
 
   // 按钮颜色切换
-  $('.btn_buy1').on({
-    'mousedown': function () {
-      $(this).removeClass('buy-up');
-      $(this).addClass('buy-down');
-    },
-    'mouseup'  : function () {
-      $(this).removeClass('buy-down');
-      $(this).addClass('buy-up');
-    }
+  $('.goods-lists').on('mousedown',  '.btn_buy1', function (e) {
+    e.stopPropagation();
+    $(this).removeClass('buy-up');
+    $(this).addClass('buy-down');
   });
-
-  $('.btn_buy2').on({
-    'mousedown': function () {
-      $(this).removeClass('buy-up');
-      $(this).addClass('buy-down');
-    },
-    'mouseup'  : function () {
-      $(this).removeClass('buy-down');
-      $(this).addClass('buy-up');
-    }
+  $('.goods-lists').on('mouseup',  '.btn_buy1', function (e) {
+    e.stopPropagation();
+    $(this).removeClass('buy-down');
+    $(this).addClass('buy-up');
   });
+  
 });
 
 /*****************************************************************
