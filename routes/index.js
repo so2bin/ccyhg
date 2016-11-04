@@ -131,14 +131,24 @@ router.get('/collect', function (req, res, next) {
     } else {
       // 在用户信息中添加收藏物品ID,如'10000|'
       let tblUser   = 'tbl_users';
-      let sqlUpUser = `UPDATE ${tblUser} SET collectgoods=CONCAT(collectgoods, $newId) WHERE id=$userId`;
-      dbStore.sequelize.query(sqlUpUser, {
-        type: dbStore.sequelize.QueryTypes.UPDATE,
-        bind: {
-          newId : `${id}|`,
-          userId: user.id
-        }
-      }).then(function () {
+      let sqlUpUser = `UPDATE ${tblUser} SET collectgoods=CONCAT(collectgoods, $newId)
+          , collectnum=collectnum+1 WHERE id=$userId`;
+      let sqlAddCollectNum = `UPDATE ${tblName} SET collect=collect+1 WHERE id=$id`;
+      BBPromise.resolve([
+        dbStore.sequelize.query(sqlUpUser, {
+          type: dbStore.sequelize.QueryTypes.UPDATE,
+          bind: {
+            newId : `${id}|`,
+            userId: user.id
+          }
+        }),
+        dbStore.sequelize.query(sqlAddCollectNum, {
+          type: dbStore.sequelize.QueryTypes.UPDATE,
+          bind: {
+            id : id
+          }
+        })
+      ]).then(function () {
         return res.end(JSON.stringify({
           code: 0,
           msg : '收藏成功'
@@ -151,7 +161,7 @@ router.get('/collect', function (req, res, next) {
       });
     }
   }).catch(function (err) {
-    console.log(err)
+    console.log(err);
     return res.end(JSON.stringify({
       code: 110,
       msg : '收藏失败'
@@ -199,14 +209,25 @@ router.get('/uncollect', function (req, res, next) {
     let userCollects = sqlUserRes[0].collectgoods;
     userCollects     = userCollects.replace(new RegExp(id + '\\\|', 'g'), "");
 
-    let sqlUpUser = `UPDATE ${tblUser} SET collectgoods="${userCollects}" WHERE id=$userId`;
+    let sqlUpUser = `UPDATE ${tblUser} SET collectgoods="${userCollects}"
+        , collectnum=collectnum-1 WHERE id=$userId`;
+    let sqlDescCollectNum = `UPDATE ${tblName} SET collect=collect-1 WHERE id=$id`;
 
-    dbStore.sequelize.query(sqlUpUser, {
-      type: dbStore.sequelize.QueryTypes.UPDATE,
-      bind: {
-        userId: user.id
-      }
-    }).then(function () {
+    BBPromise.resolve([
+      dbStore.sequelize.query(sqlUpUser, {
+        type: dbStore.sequelize.QueryTypes.UPDATE,
+        bind: {
+          userId: user.id
+        }
+      }),
+      dbStore.sequelize.query(sqlDescCollectNum, {
+        type: dbStore.sequelize.QueryTypes.UPDATE,
+        bind: {
+          id : id
+        }
+      })
+    ])
+    .then(function () {
       res.end(JSON.stringify({
         code: 0,
         msg : '收藏成功'
