@@ -1,7 +1,16 @@
-<%- include head.ejs%>
+<%- include header1.ejs%>
 
-<h1><%= message%>></h1>
-<h2><%= error.status%>></h2>
-<pre><%= error.stack%>></pre>
+<div style="color: #545454; text-align:center; position: relative; margin-top: 20px">
+    <span style="color: #545454;font-size:20px;">抱歉,</span>
+    <br/>
+    服务器发生了不可描述的错误,
+    <br/>
+    应该时您的请求地址有误, 请确认!
+    <div>
+        <h1><%= message%></h1>
+        <h2><%= error.status%></h2>
+        <!--<% error.stack %>-->
+    </div>
+</div>
 
 <%- include footer.ejs%>
