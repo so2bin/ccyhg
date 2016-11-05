@@ -475,6 +475,21 @@ $(function () {
 });
 
 
+/******************************************************
+ * 基于iscroll-probe.js 实现下拉加载, 上拉更新
+ */
+$(function () {
+  var myScroll = new IScroll('.scroll-wrapper', {
+    probeType: 2,
+    // mouseWheel: true
+  });
+  console.log(myScroll)
+  myScroll.on('scroll', function () {
+    console.log('---ON',this.y,this.maxScrollY, this.topOffset)
+  });
+  document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+});
+
 
 
 
