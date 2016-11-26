@@ -24,27 +24,16 @@ div.screen {
     transition: all 500ms cubic-bezier(0.000, 0.995, 0.990, 1.000);
 }
 
-div.screen #list-container {
+div#goods-container {
     width: 100%;
-    height: 100%;
-    padding: 0 0px;
-    margin: 0 0px;
-    -webkit-overflow-scrolling : touch;
-}
-
-div.goods-container {
-    /*overflow-x: hidden;*/
-    /*overflow-y: scroll;*/
-    height: 100%;
+    /* height在index.ejs的脚本里面，浏览器窗口高度 */
+    -webkit-overflow-scrolling: touch;
 }
 
 div.goods-lists {
-    overflow-x: hidden;
-    overflow-y: scroll;
-    height: 85%;   /* 物品列表 滚轮高度 */
+    position: relative;
     width: 100%;
-    padding: 0 0px;
-    margin: 0 0px;
+    overflow: hidden;
 }
 
 div.good-info {
@@ -280,27 +269,26 @@ div.good-info {
     transform-origin: 100% 100%;
 }
 
-
 /**************************************************************/
 /*   登录/注册页面  */
-#loginForm, #regForm{
+#loginForm, #regForm {
     position: relative;
     text-align: center;
 }
 
-#loginForm h2, #regForm h2{
+#loginForm h2, #regForm h2 {
     margin: 20px 0 20px 0;
     color: #454545;
 }
 
-#form-login, #form-reg{
+#form-login, #form-reg {
     display: inline-block;
 }
 
 /* 输入框 */
 #form-login input:not([type=button]),
-#form-reg input:not([type=button]){
-    line-height:26px;
+#form-reg input:not([type=button]) {
+    line-height: 26px;
     margin: 5px 10px;
     border-radius: 6px;
     -moz-border-radius: 6px;
@@ -310,83 +298,85 @@ div.good-info {
 }
 
 #form-login input:focus,
-#form-reg input:focus{
+#form-reg input:focus {
     border: dashed 1px #ff5ad7;
     border-radius: 6px;
 }
 
-#form-login span, #form-reg span{
+#form-login span, #form-reg span {
     font-size: 16px;
     color: #454545;
 }
 
 #loginForm .form-btn,
-#regForm .form-btn{
-    margin:16px;
+#regForm .form-btn {
+    margin: 16px;
 }
 
 #form-login #btn-login-submit,
-#form-reg #btn-reg-submit{
+#form-reg #btn-reg-submit {
     width: 32px;
     height: 14px;
-    line-height:14px;
+    line-height: 14px;
     border-radius: 4px;
-    font-family:'黑体';
+    font-family: '黑体';
     margin-right: 20px;
 }
 
 #form-login .login-reg,
-#form-reg .reg-login{
+#form-reg .reg-login {
     font-size: 14px;
     color: dodgerblue;
 }
 
-#regForm .sex{
-    margin-top:10px;
+#regForm .sex {
+    margin-top: 10px;
 }
 
 /***************************************************/
 /* 收藏按钮没有 */
-#dialog-center{
+#dialog-center {
     position: absolute;
-    top:50%;
-    left:50%;
+    top: 50%;
+    left: 50%;
 }
-#dialog-collect-login-tips{
+
+#dialog-collect-login-tips {
     position: relative;
     top: -100px;
-    left:-50%;
+    left: -50%;
     height: 100px;
     width: 200px;
 
-    -webkit-border-radius:6px;
-    -moz-border-radius:6px;
-    border-radius:6px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
     font-weight: 700;
     background: rgb(251, 219, 147);
-    color:red;
+    color: red;
 }
-#dialog-collect-login-tips .dialog-tips{
+
+#dialog-collect-login-tips .dialog-tips {
     position: relative;
     text-align: center;
     font-size: 15px;
     top: 15px;
 }
 
-#dialog-collect-login-tips .dialog-btns{
+#dialog-collect-login-tips .dialog-btns {
     position: relative;
     top: 40px;
 }
 
-#dialog-collect-login-tips .dialog-collect-cancel{
+#dialog-collect-login-tips .dialog-collect-cancel {
     position: relative;
-    left:15px;
+    left: 15px;
 }
-#dialog-collect-login-tips .dialog-collect-ok{
+
+#dialog-collect-login-tips .dialog-collect-ok {
     position: absolute;
     right: 15px;
 }
-
 
 /*************************************************/
 /** 下拉更新, 上拉加载 **/
@@ -395,51 +385,83 @@ div.good-info {
  * 下拉样式 Pull down styles
  *
  */
+.scroll-list {
+    position: absolute;
+    overflow: scroll;
+    width: 100%;
+    top: -100px
+    /*height在index.ejs的腳本里完成，补全这里的top*/
+}
+
+/* '.scroll-list>div'元素的高度不能小于$('.scroll-list') */
+.scroll-list > div {
+    /*border: 1px solid red;*/
+    position: relative;
+}
+
 #pullDown, #pullUp {
-    background:#fff;
-    height:40px;
-    line-height:40px;
-    padding:5px 10px;
-    border-bottom:1px solid #ccc;
-    font-weight:bold;
-    font-size:14px;
-    color:#888;
-}
-#pullDown .pullDownIcon, #pullUp .pullUpIcon  {
-    display:block; float:left;
-    width:40px; height:40px;
-    background:url(../../../images/pull-icon@2x.png) 0 0 no-repeat;
-    -webkit-background-size:40px 80px; background-size:40px 80px;
-    -webkit-transition-property:-webkit-transform;
-    -webkit-transition-duration:250ms;
-}
-#pullDown .pullDownIcon {
-    -webkit-transform:rotate(0deg) translateZ(0);
-}
-#pullUp .pullUpIcon  {
-    -webkit-transform:rotate(-180deg) translateZ(0);
+    background: -webkit-linear-gradient(bottom, #F2F2EA, #b3ff52, #F2F2EA);
+    height: 100px;
+    padding: 0px 10px;
+    font-weight: bold;
+    font-size: 14px;
+    color: #888;
+    /*border-bottom:1px solid #ccc;*/
+    position: relative;
 }
 
-#pullDown.flip .pullDownIcon {
-    -webkit-transform:rotate(-180deg) translateZ(0);
+#pullDown > div {
+    position: absolute;
+    bottom: 30px;
 }
 
-#pullUp.flip .pullUpIcon {
-    -webkit-transform:rotate(0deg) translateZ(0);
+#pullUp{
+    position: relative;
+    bottom: 0px;
+    width: 100%;
+}
+#pullUp>div{
+    position: absolute;
+    top:34px
 }
 
 #pullDown.loading .pullDownIcon, #pullUp.loading .pullUpIcon {
-    background-position:0 100%;
-    -webkit-transform:rotate(0deg) translateZ(0);
-    -webkit-transition-duration:0ms;
+    background-position: 0 100%;
+    -webkit-transform: rotate(0deg) translateZ(0);
+    -webkit-transition-duration: 0ms;
 
-    -webkit-animation-name:loading;
-    -webkit-animation-duration:2s;
-    -webkit-animation-iteration-count:infinite;
-    -webkit-animation-timing-function:linear;
+    -webkit-animation-name: loading;
+    -webkit-animation-duration: 2s;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-timing-function: linear;
+}
+
+#pullDown .pullDownIcon, #pullUp .pullUpIcon {
+    margin-top: -8px;
+    display: block;
+    float: left;
+    width: 40px;
+    height: 40px;
+    background: url(../../../images/res/pull-icon@2x.png) 0 0 no-repeat;
+    -webkit-background-size: 40px 80px;
+    background-size: 40px 80px;
+    -webkit-transition-property: -webkit-transform;
+    -webkit-transition-duration: 250ms;
+}
+
+#pullDown .pullDownIcon {
+    -webkit-transform: rotate(0deg) translateZ(0);
+}
+
+#pullUp .pullUpIcon {
+    -webkit-transform: rotate(-180deg) translateZ(0);
 }
 
 @-webkit-keyframes loading {
-    from { -webkit-transform:rotate(0deg) translateZ(0); }
-    to { -webkit-transform:rotate(360deg) translateZ(0); }
+    from {
+        -webkit-transform: rotate(0deg) translateZ(0);
+    }
+    to {
+        -webkit-transform: rotate(360deg) translateZ(0);
+    }
 }

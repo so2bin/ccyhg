@@ -1,11 +1,11 @@
-<%- include header1.ejs%>
+<%- include header1.ejs %>
 
 <link rel="stylesheet" type="text/css" href="css/nav/demo-1.css">
 <link rel="stylesheet" type="text/css" href="css/index/index.css">
 
 <div class="wrapper">
     <div class="menu">
-        <img id="menu-bg" src="" />
+        <img id="menu-bg" src=""/>
         <ul>
             <li class="active mainKey"><a>最新</a></li>
             <li class="mainKey"><a>火爆</a></li>
@@ -37,16 +37,14 @@
             <!--用户按钮-->
             <div id="btn-user-img">
                 <div id="user-img-inactive"></div>
-                <div id="user-img-active"  style="display: none"></div>
+                <div id="user-img-active" style="display: none"></div>
             </div>
         </div>
         <!--点击用户信息按钮，如果服务器发生错误，这里提示后返回-->
         <div id="user-res-tips" style="display: none;"></div>
 
-        <div id="list-container">
-            <div class="goods-container">
-                <%- include goodinfo.ejs %>
-            </div>
+        <div id="goods-container">
+            <%- include goodinfo.ejs %>
         </div>
 
         <!--用户信息页面-->
@@ -61,23 +59,49 @@
 <!--<script type="text/javascript" src="/jquery-ui/jquery-ui.js"></script>-->
 <script src="//cdn.bootcss.com/jqueryui/1.12.1/jquery-ui.min.js"></script>
 
-<script src="/js/index/index.js"></script>
 <!--<script src="/plugins/clipboard.min.js" defer></script>-->
 <script src="//cdn.bootcss.com/clipboard.js/1.5.15/clipboard.min.js"></script>
 <script src="/plugins/iscroll-probe.js"></script>
 
+<script src="/js/index/index.js"></script>
+
 <script type="text/javascript">
     $(function () {
-        $('div.goods-lists').css('height',function () {
-            return $(window).height()- 37;
+        $('#goods-container').css('height', function () {
+            return $(window).height() - 37;
         });
-        if($(window).width()>767){
+
+        $('.goods-lists').css('height', function () {
+            return $(window).height() - 37 - 8;
+        })
+        $('.scroll-list').css('height', function () {
+            // 51为补全　'下拉更新'　元素的高度 (pullDown)
+            return parseInt($('.goods-lists').css('height')) + 100;
+        })
+
+        // '.scroll-list>div'元素的高度不能小于$('.scroll-list')，否则无法使用iscroll
+        $('.scroll-list>div:first').css('height', function () {
+            var goods    = $('.good-info');
+            var goodH    = goods.length === 0 ? 150 : parseInt(goods.height());
+            var gdTotalH = goods.length * goodH;
+            var scrollH  = parseInt($('.scroll-list').css('height'));
+            var divH     = gdTotalH > scrollH ? gdTotalH : scrollH;
+            return divH + 170;
+        });
+
+        // 没有数据的时间也能下拉刷新
+        $('#nulldata').css('height', function () {
+            // 不能-51，这样高度刚好满足，就不会出现scroll
+            return parseInt($('.scroll-list').css('height'));
+        })
+
+        if ($(window).width() > 767) {
             // 初始化图片显示高宽
             $('.good-info').css({
                 height: '200px'
             })
             $('.good-info .good-img').css({
-                width:'200px'
+                width: '200px'
             });
             // 物品描述文字高宽
             $('.good-caption').css({
@@ -85,7 +109,71 @@
             });
         }
     });
+
+    /******************************************************
+     * 基于iscroll-probe.js 实现下拉加载, 上拉更新
+     */
+    $(function () {
+        var pPullUp  = $('#pullUp');
+        var pPullDwn = $('#pullDown');
+        var myScroll = new IScroll('.scroll-list', {
+            probeType : 2,
+            mouseWheel: true,
+            click     : true
+        });
+        var scrl_ys  = 0;
+        myScroll.on('scrollStart', function () {
+            scrl_ys = this.y;
+        })
+        myScroll.on('scroll', function () {
+            // console.log('---ON',this.y,this.maxScrollY, pPullUp.hasClass('loading'))
+            // 下拉到底且有物品时才显示　上拉加载元素
+            if (this.y < this.maxScrollY && $('.good-info').length > 0) {
+                $('#pullUp').css('display', 'block');
+            }
+            // 切换
+            if (scrl_ys < 51 && scrl_ys >= this.maxScrollY) {
+                if (this.y > 0 && this.y < 51 && (!pPullDwn.hasClass('c_pulldown')
+                        || pPullDwn.hasClass('loading'))) {
+                    pPullDwn.addClass('c_pulldown');
+                    pPullDwn.removeClass('loading');
+                    pPullDwn.children('.pullDownLabel').html('向下拉刷新');
+                } else if (this.y > 51 && !pPullDwn.hasClass('loading')) {
+                    pPullDwn.addClass('loading');
+                    pPullDwn.children('.pullDownLabel').html('释放刷新');
+                } else if (this.y < this.maxScrollY && this.y > this.maxScrollY - 51
+                        && (!pPullUp.hasClass('c_pullup') || pPullUp.hasClass('loading'))) {
+                    pPullUp.addClass('c_pullup');
+                    pPullUp.removeClass('loading');
+                    pPullUp.children('.pullUpLabel').html('上拉加载');
+                } else if (this.y < this.maxScrollY - 51 && !pPullUp.hasClass('loading')) {
+                    pPullUp.addClass('loading');
+                    pPullUp.children('.pullUpLabel').html('释放加载');
+                }
+            }
+        });
+        myScroll.on('scrollEnd', function () {
+            // console.log('---END',this.y,this.maxScrollY, pPullUp.hasClass('loading'))
+            if (this.y < 51 && this.y >= this.maxScrollY) {
+                if (pPullDwn.hasClass('loading') && pPullDwn.hasClass('c_pulldown')) {
+                    pPullDwn.removeClass('c_pulldown');
+                    pPullDwn.removeClass('loading');
+                    console.log('----------这里刷新');
+                } else if (pPullUp.hasClass('c_pullup') && pPullUp.hasClass('loading')) {
+                    pPullUp.removeClass('c_pullup');
+                    pPullUp.removeClass('loading');
+                    // 只有当前页面有物品时才可以加载
+                    if ($('.good-info').length > 0) {
+                        console.log('----------这里加载');
+                    }
+                }
+            }
+        });
+        document.addEventListener('touchmove', function (e) {
+            e.preventDefault();
+        }, false);
+    });
 </script>
 
-<%- include footer.ejs%>
+<%- include footer.ejs %>
 

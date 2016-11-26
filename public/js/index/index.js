@@ -2,6 +2,33 @@
  * Created by heli on 16-8-30.
  */
 'use strict';
+/**
+ * 判断网页打开在PC还是移动端
+ */
+function deviceType() {
+  var sUserAgent  = navigator.userAgent.toLowerCase();
+  var bIsIpad     = sUserAgent.match(/ipad/i) == "ipad";
+  var bIsIphoneOs = sUserAgent.match(/iphone os/i) == "iphone os";
+  var bIsMidp     = sUserAgent.match(/midp/i) == "midp";
+  var bIsUc7      = sUserAgent.match(/rv:1.2.3.4/i) == "rv:1.2.3.4";
+  var bIsUc       = sUserAgent.match(/ucweb/i) == "ucweb";
+  var bIsAndroid  = sUserAgent.match(/android/i) == "android";
+  var bIsCE       = sUserAgent.match(/windows ce/i) == "windows ce";
+  var bIsWM       = sUserAgent.match(/windows mobile/i) == "windows mobile";
+  if (bIsIpad || bIsIphoneOs || bIsMidp || bIsUc7 || bIsUc || bIsAndroid || bIsCE || bIsWM) {
+    return 'mobile';
+  } else {
+    return 'pc';
+  }
+}
+// // 点击事件与触摸事件全局化
+// var click="mousedown",clickdown="mousedown",clickup='mouseup';
+// if (deviceType()=='mobile') {
+//   click = 'touchstart';
+//   clickdown = 'touchstart';
+//   clickup = 'touchend';
+// }
+
 /**********************************************************************/
 /*
  导航栏动画与初始化
@@ -44,7 +71,7 @@ $(function () {
 
   function closeMenu() {
     // 关闭打开的下拉导航
-    $('div.menu>ul>li.active>ul').css('display','none');
+    $('div.menu>ul>li.active>ul').css('display', 'none');
     //关闭侧边导航
     $('div.screen, .menu').removeClass('animate');
     $('div.y').fadeIn(150);
@@ -69,11 +96,11 @@ $(function () {
    *  侧边栏导航按钮 点击后展开子类
    */
   // 一级导航栏点击事件由一级ul代理
-  $('div.menu>ul').on('click', '.mainKey', function (e) {
+  $('div.menu>ul').on(click, '.mainKey', function (e) {
     e.stopPropagation();
     var curActive = $('div.menu>ul>li.active');
     curActive.removeClass('active');
-    curActive.children('ul').css('display','none');
+    curActive.children('ul').css('display', 'none');
     $(this).addClass('active');
     // 如果当前li下面还有ul,即子导航栏,则打开导航栏, 否则打开链接
     if ($(this).has('ul').length) {
@@ -85,7 +112,7 @@ $(function () {
   });
 
   // 二级导航栏点击事件由二级ul代理
-  $('.mainKey>ul').on('click', '.subKey1', function (e) {
+  $('.mainKey>ul').on(click, '.subKey1', function (e) {
     e.stopPropagation();
     var subKey1 = $(this).text();
     // 获得主类的选项值
@@ -188,7 +215,6 @@ $(function () {
 $(function () {
   // Clipboard.js 剪贴板插件
   var clipboard1 = new Clipboard('.btn_buy1');
-  var clipboard2 = new Clipboard('.btn_buy2');
 
   // 复制完成提示框,跳转对话框
   $('#dialog-aftercopy').dialog({
@@ -214,29 +240,17 @@ $(function () {
     window.location.href = "taobao://";
   });
 
-  clipboard2.on('success', function (e) {
-    console.log(e.text);
-    $('#dialog-aftercopy').css('color', 'black').html('复制成功').dialog('open');
-    setTimeout(function () {
-      $('#dialog-aftercopy').dialog('close');
-    }, 300);
-
-    // 打开淘宝APP
-    window.location.href = "taobao://";
-  });
-
-  // 按钮颜色切换
-  $('.goods-lists').on('mousedown',  '.btn_buy1', function (e) {
-    e.stopPropagation();
+  //按钮颜色切换
+  $('.goods-lists').on('click', '.btn_buy1', function (e) {
+    // e.stopPropagation();
     $(this).removeClass('buy-up');
     $(this).addClass('buy-down');
   });
-  $('.goods-lists').on('mouseup',  '.btn_buy1', function (e) {
-    e.stopPropagation();
+  $('.goods-lists').on('click', '.btn_buy1', function (e) {
+    // e.stopPropagation();
     $(this).removeClass('buy-down');
     $(this).addClass('buy-up');
   });
-  
 });
 
 /*****************************************************************
@@ -244,9 +258,6 @@ $(function () {
  * 用户信息, 登出按钮
  *
  */
-// 保存用户信息
-var USER = null;
-
 $(function () {
   // user 按钮
   var bInUser = false;   // 个人信息界面切换标记
@@ -266,14 +277,14 @@ $(function () {
       $('#user-img-inactive').css('display', 'block');
 
       // 切换到个人信息页面
-      $('#list-container').css('display', 'block');
+      $('#goods-container').css('display', 'block');
       $('#userInfo').css('display', 'none');
     }
 
   });
 
   // 发起ajax请求 获得用户最新信息
-  var showUserInfo = function () {
+  var showUserInfo        = function () {
     $.ajax({
       url        : '/u',
       type       : 'GET',
@@ -281,11 +292,11 @@ $(function () {
       contentType: 'charset=utf-8',
       success    : function (res, status, xhr) {
         if (res.code != 0) {
-          bInUser = false;    // 刷新后无效,需要修改  // TODO
+          bInUser              = false;    // 刷新后无效,需要修改  // TODO
           window.location.href = '/u/login';
         } else if (res.code === 0) {
           // 切换到个人信息页面
-          $('#list-container').css('display', 'none');
+          $('#goods-container').css('display', 'none');
           $('#userInfo').css('display', 'block');
 
           // 初始化个人信息界面
@@ -301,7 +312,6 @@ $(function () {
       }
     })
   };
-
   var initUserInfoWithRes = function (user) {
     $('#userInfo .user-id .value').html(user.id);
     $('#userInfo .user-name .value').html(user.username);
@@ -335,6 +345,7 @@ $(function () {
       '      </div>',
       '  </div>'
     ];
+
     // 上面的收藏按钮重新定义了一个lass, 勇于点击,应为目前这个界面与商品界面完全一样, 如果与商品界面公用
     // 点击事件,则不好区分时那个界面的按钮点击, 用上面的bInUser变量做标示可能日后会有麻烦;
     collectgood = collectgood.join("");
@@ -362,7 +373,7 @@ $(function () {
               // 成功 从当前界面删除该元素
               curGood.remove();
               // 在商品界面中取消收藏
-              var idDiv = $('#list-container .goods-lists .id:contains(' + id + ')').parent('.good-caption');
+              var idDiv = $('#goods-container .goods-lists .id:contains(' + id + ')').parent('.good-caption');
               idDiv.children('.btn_good_collect_active').css('display', 'none');
               idDiv.children('.btn_good_collect_inactive').css('display', 'block');
             } else if (res.code == 100) {
@@ -393,7 +404,7 @@ $(function () {
       dataType   : 'json',
       contentType: 'charset=utf-8',
       success    : function () {
-        bInUser = !bInUser;
+        bInUser              = !bInUser;
         window.location.href = '/';
       },
       error      : function (err) {
@@ -474,21 +485,6 @@ $(function () {
 
 });
 
-
-/******************************************************
- * 基于iscroll-probe.js 实现下拉加载, 上拉更新
- */
-$(function () {
-  var myScroll = new IScroll('.scroll-wrapper', {
-    probeType: 2,
-    // mouseWheel: true
-  });
-  console.log(myScroll)
-  myScroll.on('scroll', function () {
-    console.log('---ON',this.y,this.maxScrollY, this.topOffset)
-  });
-  document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
-});
 
 
 

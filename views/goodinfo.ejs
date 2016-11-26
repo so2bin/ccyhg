@@ -1,75 +1,82 @@
+<!-- 物品列表 -->
+
 <div class="goods-lists row col-md-3 col-sm-6 col-xs-12">
-    <div id="pullDown">
-        <span class="pullDownIcon"></span><span class="pullDownLabel">下拉刷新...</span>
-    </div>
-    <% if(items.length <= 0){ %>
-    <div id="nulldata">
-        Sorry, <br/>
-        暂时没有宝贝，请联系微信：...
-    </div>
-    <% }else{ %>
-    <div class="scroll-wrapper">  <!-- 该元素用于IScroll插件识别 -->
-        <div class="scroll-list">
+    <div class="scroll-list"> <!-- 用于iscroll-probe.js插件识别 -->
+        <div>
+            <div id="pullDown">
+                <div>
+                    <span class="pullDownIcon"></span><span class="pullDownLabel">下拉刷新...</span>
+                </div>
+            </div>
+
+            <% if(items.length <= 0){ %>
+            <div id="nulldata">
+                Sorry, <br/>
+                暂时没有宝贝，请联系微信：...
+            </div>
+            <% }else{ %>
             <% items.forEach(function(item, index){ %>
             <div class="good-info thumbnail">
-                <img class="good-img img-rounded" src=<%- item.pic1 %> >
+                <img class="good-img img-rounded" src=<%- item.pic1 %>>
                 <div class="good-caption">
-                    <div class="id" style="display: none"><%- item.id%></div>  <!--存储物品ID-->
+                    <div class="id" style="display: none"><%- item.id %></div>  <!--存储物品ID-->
                     <div class="good-title"><%- item.title %></div>
                     <div class="good-price">
                         优惠后:&nbsp;
                         <span>
                     <%- item.realprice %>
-                </span>
+                    </span>
                     </div>
                     <div class="good-coupon">
                         优惠劵:&nbsp;
                         <span>
                     <%- item.coupon %>
-                </span>
+                    </span>
                     </div>
                     <!--<div class="good-detail-link">-->
                     <!--<a href="#" class="btn btn-default">详情</a>-->
                     <!--</div>-->
                     <div class="buy">
-                        <div class="btn_buy1 buy-up" data-clipboard-text="<%- item.step1%>">去领卷</div>
-                        <!--<div class="btn_buy2 buy-up" data-clipboard-text="">步骤2</div>-->
+                        <div class="btn_buy1 buy-up" data-clipboard-text="<%- item.step1 %>">去领卷</div>
                     </div>
                     <div class="good-collect-num">
                         收藏数:&nbsp;
                         <span>
-                    <%- item.collect %>
-                </span>
+                        <%- item.collect %>
+                    </span>
                     </div>
-                    <% if(!item.bCollected){%>
+                    <!--　收藏按钮　-->
+                    <% if(!item.bCollected){ %>
                     <div class="btn_good_collect_active heart-active" style="display: none"></div>
                     <div class="btn_good_collect_inactive heart-inactive"></div>
-                    <%}else{%>
+                    <% }else{ %>
                     <div class="btn_good_collect_active heart-active"></div>
                     <div class="btn_good_collect_inactive heart-inactive" style="display: none"></div>
-                    <%}%>
+                    <% } %>
 
                 </div>
             </div>
             <% }) %>
+            <% } %>
+            <div id="pullUp" style="display: none">
+                <div>
+                    <span class="pullUpIcon"></span><span class="pullUpLabel">上拉加载更多...</span>
+                </div>
+            </div>
         </div>
     </div>
-    <% } %>
-    <div id="pullUp">
-        <span class="pullUpIcon"></span><span class="pullUpLabel">上拉加载更多...</span>
-    </div>
+</div>
 
-    <!-- 一些提示框  -->
-    <div id="dialog-aftercopy" style="display: none">
-        复制完成
-    </div>
-    <div id="dialog-center" style="display: none">
-        <div id="dialog-collect-login-tips" style="display: block">
-            <div class="dialog-tips">只有先登陆才可以收藏哦</div>
-            <div class="dialog-btns">
-                <div class="dialog-collect-cancel">取消</div>
-                <div class="dialog-collect-ok">登陆</div>
-            </div>
+<!-- 一些提示框  -->
+<div id="dialog-aftercopy" style="display: none">
+    复制完成
+</div>
+<div id="dialog-center" style="display: none">
+    <div id="dialog-collect-login-tips" style="display: block">
+        <div class="dialog-tips">只有先登陆才可以收藏哦</div>
+        <div class="dialog-btns">
+            <div class="dialog-collect-cancel">取消</div>
+            <div class="dialog-collect-ok">登陆</div>
         </div>
     </div>
 </div>
