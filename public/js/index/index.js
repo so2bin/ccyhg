@@ -5,6 +5,17 @@
 /**
  * 判断网页打开在PC还是移动端
  */
+// 保存一些全局信息
+window.$info = {
+  pageInfo: {
+    size: 6,
+    page: 1
+  },
+  navInfo : {
+    mainKey: "",
+    subKey1: ""
+  }
+};
 function deviceType() {
   var sUserAgent  = navigator.userAgent.toLowerCase();
   var bIsIpad     = sUserAgent.match(/ipad/i) == "ipad";
@@ -103,34 +114,33 @@ $(function () {
     curActive.children('ul').css('display', 'none');
     $(this).addClass('active');
     // 如果当前li下面还有ul,即子导航栏,则打开导航栏, 否则打开链接
+    window.$info.navInfo.mainKey = $(this).children('a').text();
     if ($(this).has('ul').length) {
       $(this).children('ul').toggle(100);
     } else {
       closeMenu();
-      window.location.href = '/?mainKey=' + $(this).text();
+      window.location.href = '/?mainKey=' + window.$info.navInfo.mainKey + '&page=' + window.$info.pageInfo.page + '&size=' + window.$info.pageInfo.size;
     }
   });
 
   // 二级导航栏点击事件由二级ul代理
   $('.mainKey>ul').on(click, '.subKey1', function (e) {
     e.stopPropagation();
-    var subKey1 = $(this).text();
     // 获得主类的选项值
-    var mainKey = $(e.delegateTarget).prev().text();
+    // var mainKey = $(e.delegateTarget).prev().text();
     $(e.delegateTarget).children('.menu-subkey-selected')
     .toggleClass('menu-subkey-selected');
     $(this).toggleClass('menu-subkey-selected');
     // 刷新页面
-    window.location.href = '/?mainKey=' + mainKey + '&subKey1=' + subKey1;
+    window.$info.navInfo.subKey1 = $(this).text();
+    window.location.href         = '/?mainKey=' + window.$info.navInfo.mainKey + '&subKey1=' + window.$info.navInfo.subKey1 + '&page=' + window.$info.pageInfo.page + '&size=' + window.$info.pageInfo.size;
   });
-
 });
 
 /*****************************************************************
  /*
  商品收藏js
  */
-
 $(function () {
   // 取消收藏按钮切换与事件调用
   $('.goods-lists').on('click', '.btn_good_collect_active', function (e) {
@@ -344,11 +354,10 @@ $(function () {
       '      <div class="btn_good_collect_active_user heart-active"></div>',
       '      </div>',
       '  </div>'
-    ];
+    ].join("");
 
     // 上面的收藏按钮重新定义了一个lass, 勇于点击,应为目前这个界面与商品界面完全一样, 如果与商品界面公用
     // 点击事件,则不好区分时那个界面的按钮点击, 用上面的bInUser变量做标示可能日后会有麻烦;
-    collectgood = collectgood.join("");
     $.each(user.collectgoods, function (idx, good) {
       var regGood = collectgood;
       regGood     = regGood.replace(/good_id/, good.id);
@@ -390,7 +399,6 @@ $(function () {
 
           }
         });
-
       });
     });
   };
@@ -415,9 +423,7 @@ $(function () {
       }
     })
   })
-
 });
-
 
 /******************************************************
  * 登陆,注册提交按钮

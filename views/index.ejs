@@ -66,6 +66,15 @@
 <script src="/js/index/index.js"></script>
 
 <script type="text/javascript">
+    (function ($) {
+        $.getUrlParam = function (name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var r   = window.location.search.substr(1).match(reg);
+            if (r != null) return decodeURI(r[2]);
+            return null;
+        }
+    })(jQuery);
+
     $(function () {
         $('#goods-container').css('height', function () {
             return $(window).height() - 37;
@@ -80,14 +89,15 @@
         })
 
         // '.scroll-list>div'元素的高度不能小于$('.scroll-list')，否则无法使用iscroll
-        $('.scroll-list>div:first').css('height', function () {
-            var goods    = $('.good-info');
-            var goodH    = goods.length === 0 ? 150 : parseInt(goods.height());
-            var gdTotalH = goods.length * goodH;
-            var scrollH  = parseInt($('.scroll-list').css('height'));
-            var divH     = gdTotalH > scrollH ? gdTotalH : scrollH;
-            return divH + 170;
-        });
+        // 不需要这段代码，用自动的100%就可以了
+//        $('.scroll-list>div:first').css('height', function () {
+//            var goods    = $('.good-info');
+//            var goodH    = goods.length === 0 ? 150 : parseInt(goods.height());
+//            var gdTotalH = goods.length * goodH;
+//            var scrollH  = parseInt($('.scroll-list').css('height'));
+//            var divH     = gdTotalH > scrollH ? gdTotalH : scrollH;
+//            return divH + 170;
+//        });
 
         // 没有数据的时间也能下拉刷新
         $('#nulldata').css('height', function () {
@@ -128,15 +138,15 @@
         myScroll.on('scroll', function () {
             // console.log('---ON',this.y,this.maxScrollY, pPullUp.hasClass('loading'))
             // 下拉到底且有物品时才显示　上拉加载元素
-            if (this.y < this.maxScrollY && $('.good-info').length > 0) {
-                $('#pullUp').css('display', 'block');
-            }
+//            if (this.y < this.maxScrollY && $('.good-info').length > 0) {
+//                $('#pullUp').css('display', 'block');
+//            }
             // 切换
             if (scrl_ys < 51 && scrl_ys >= this.maxScrollY) {
                 if (this.y > 0 && this.y < 51 && (!pPullDwn.hasClass('c_pulldown')
                         || pPullDwn.hasClass('loading'))) {
                     pPullDwn.addClass('c_pulldown');
-                    pPullDwn.removeClass('loading');
+                    pPullDwn.removeClass('loadin+g');
                     pPullDwn.children('.pullDownLabel').html('向下拉刷新');
                 } else if (this.y > 51 && !pPullDwn.hasClass('loading')) {
                     pPullDwn.addClass('loading');
@@ -145,30 +155,143 @@
                         && (!pPullUp.hasClass('c_pullup') || pPullUp.hasClass('loading'))) {
                     pPullUp.addClass('c_pullup');
                     pPullUp.removeClass('loading');
-                    pPullUp.children('.pullUpLabel').html('上拉加载');
+                    pPullUp.children('.pullUpLabel').html('>>> 上拉加载更多 >>>');
                 } else if (this.y < this.maxScrollY - 51 && !pPullUp.hasClass('loading')) {
                     pPullUp.addClass('loading');
-                    pPullUp.children('.pullUpLabel').html('释放加载');
+                    pPullUp.children('.pullUpLabel').html('>>> 释放加载 >>>');
                 }
             }
         });
+
         myScroll.on('scrollEnd', function () {
             // console.log('---END',this.y,this.maxScrollY, pPullUp.hasClass('loading'))
+            var mK = "", sK = "", sq = "";
             if (this.y < 51 && this.y >= this.maxScrollY) {
+                /****** 下拉刷新 *******/
                 if (pPullDwn.hasClass('loading') && pPullDwn.hasClass('c_pulldown')) {
                     pPullDwn.removeClass('c_pulldown');
                     pPullDwn.removeClass('loading');
-                    console.log('----------这里刷新');
+                    //　重置page=1
+                    mK = $.getUrlParam('mainKey') || '最新';
+                    sK = $.getUrlParam('subKey1');
+                    sq = sK ? ('subKey1=' + sK) : "";
+
+                    window.$info.pageInfo.page = 1;
+                    window.location.href       = '/?mainKey=' + mK + "&" + sq + '&page=' + window.$info.pageInfo.page + '&size=' + window.$info.pageInfo.size;
                 } else if (pPullUp.hasClass('c_pullup') && pPullUp.hasClass('loading')) {
                     pPullUp.removeClass('c_pullup');
                     pPullUp.removeClass('loading');
+                    pPullUp.children('.pullUpLabel').html('>>> 上拉加载更多 >>>');
                     // 只有当前页面有物品时才可以加载
                     if ($('.good-info').length > 0) {
-                        console.log('----------这里加载');
+                        /*********** 上拉加载  *************/
+                        mK = $.getUrlParam('mainKey') || '最新';
+                        sK = $.getUrlParam('subKey1');
+                        sq = sK ? ('subKey1=' + sK) : "";
+                        ++window.$info.pageInfo.page;
+                        $.ajax({
+                            url        : '/addgoods?mainKey=' + mK + "&" + sq + '&page=' + window.$info.pageInfo.page + '&size=' + window.$info.pageInfo.size,
+                            type       : 'GET',
+                            dataType   : 'json',
+                            contentType: 'charset=utf-8',
+                            success    : function (res, status, xhr) {
+                                console.log(res.msg.items.length, window.$info.pageInfo.page)
+                                if (res.code != 0 || res.msg.items.length == 0) {
+                                    // TODO 显示到底了
+                                    $('#user-res-tips').css('display', 'block').html('已经被掏空啦^-^')
+                                    --(window.$info.pageInfo.page);
+                                } else if (res.code === 0) {
+                                    // 加载信息
+                                    addLoadingGoods(res.msg);
+                                    myScroll.refresh();
+                                }
+                            },
+                            error      : function (err) {
+                                $('#user-res-tips').css('display', 'block').html('Sorry,服务器出错啦!');
+                                setTimeout(function () {
+                                    $('#user-res-tips').css('display', 'none')
+                                }, 500);
+                            }
+                        });
                     }
                 }
             }
         });
+
+        // 下拉加载新物品
+        function addLoadingGoods(msg) {
+            $.each(msg.items, function (idx, good) {
+                var regGood = collectgood;
+                regGood     = regGood.replace(/good_id/, good.id);
+                regGood     = regGood.replace(/good_pic1/, good.pic1);
+                regGood     = regGood.replace(/good_title/, good.title);
+                regGood     = regGood.replace(/good_realprice/, good.realprice);
+                regGood     = regGood.replace(/good_coupon/, good.coupon);
+                regGood     = regGood.replace(/good_collect/, good.collect);
+                var curGood = $(regGood);
+                curGood.insertBefore($('#pullUp'));
+                // 监听事件
+                $(curGood.find('.btn_good_collect_active_user').get(0)).click(function () {
+                    var that = $(this).parent('.good-caption').children('.id');
+                    var id   = that.html();
+                    // 往服务器发送收藏数据
+                    $.ajax({
+                        url     : '/uncollect?id=' + id,
+                        type    : 'GET',
+                        dataType: 'json',
+                        success : function (res) {
+                            if (res.code == 0) {
+                                // 成功 从当前界面删除该元素
+                                curGood.remove();
+                                // 在商品界面中取消收藏
+                                var idDiv = $('#goods-container .goods-lists .id:contains(' + id + ')').parent('.good-caption');
+                                idDiv.children('.btn_good_collect_active').css('display', 'none');
+                                idDiv.children('.btn_good_collect_inactive').css('display', 'block');
+                            } else if (res.code == 100) {
+                                // 没有登陆
+                                $('#dialog-center').show();
+                            } else {
+                                $('#dialog-aftercopy').css('color', 'red').html('取消失败').dialog('open');
+                                setTimeout(function () {
+                                    $('#dialog-aftercopy').dialog('close');
+                                }, 1000);
+                            }
+                        },
+                        error   : function () {
+
+                        }
+                    });
+
+                });
+            })
+        }
+
+        var collectgood = [
+            '  <div class="good-info thumbnail">',
+            '    <img class="good-img img-rounded" src="good_pic1">',
+            '    <div class="good-caption">',
+            '      <div class="id" style="display: none">good_id</div>',
+            '      <div class="good-title">good_title</div>',
+            '      <div class="good-price">',
+            '        优惠后:&nbsp;',
+            '        <span>good_realprice</span>',
+            '      </div>',
+            '      <div class="good-coupon">',
+            '        优惠劵:&nbsp;',
+            '        <span>good_coupon</span>',
+            '      </div>',
+            '      <div class="buy">',
+            '        <div class="btn_buy1 buy-up" data-clipboard-text="good_step1">去领卷</div>',
+            '      </div>',
+            '      <div class="good-collect-num">',
+            '        收藏数:&nbsp;',
+            '        <span>good_collect</span>',
+            '      </div>',
+            '      <div class="btn_good_collect_active_user heart-active"></div>',
+            '      </div>',
+            '  </div>'
+        ].join("");
+
         document.addEventListener('touchmove', function (e) {
             e.preventDefault();
         }, false);

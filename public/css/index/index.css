@@ -387,7 +387,6 @@ div.good-info {
  */
 .scroll-list {
     position: absolute;
-    overflow: scroll;
     width: 100%;
     top: -100px
     /*height在index.ejs的腳本里完成，补全这里的top*/
@@ -397,9 +396,10 @@ div.good-info {
 .scroll-list > div {
     /*border: 1px solid red;*/
     position: relative;
+    overflow: scroll;
 }
 
-#pullDown, #pullUp {
+#pullDown {
     background: -webkit-linear-gradient(bottom, #F2F2EA, #b3ff52, #F2F2EA);
     height: 100px;
     padding: 0px 10px;
@@ -415,14 +415,27 @@ div.good-info {
     bottom: 30px;
 }
 
-#pullUp{
+#pullUp {
+    height: 40px;
+    padding: 0px 10px;
+    font-weight: bold;
+    font-size: 14px;
+    color: #888;
+    /*border-bottom:1px solid #ccc;*/
     position: relative;
-    bottom: 0px;
-    width: 100%;
 }
-#pullUp>div{
+
+#pullUp {
+    position: relative;
+    width: 100%;
+    padding-top: 10px;
+}
+
+#pullUp .pullUpLabel {
     position: absolute;
-    top:34px
+    left: 50%;
+    margin-left: -80px;
+    margin-top: 5px;
 }
 
 #pullDown.loading .pullDownIcon, #pullUp.loading .pullUpIcon {
