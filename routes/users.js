@@ -118,7 +118,6 @@ router.post('/login', function (req, res, next) {
     })
   ]).spread(function (sqlUserRes) {
     let item = sqlUserRes[0];
-    console.log(item);
     if (sqlUserRes.length === 0) {
       res.end(JSON.stringify({
         code: 200,  // 账号错误

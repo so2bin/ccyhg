@@ -283,8 +283,9 @@ router.get('/addgoods', function (req, res, next) {
     FROM ${tblName} WHERE ${mainKeySel}
     AND ${subKey1Sel} ORDER BY ftime DESC LIMIT ${offset},$size`;
   // 增加用户信息查询,用于判断用户是否收藏有当前的物品
-  let sqlUser = `SELECT * FROM tbl_users WHERE id=$id`;
-  let id      = req.session.user ? req.session.user.id : -1;  // -1即差不多用户
+  let usrId   = req.session.user ? req.session.user.id : -1; // -1即无效用户
+  let uIdSel  = req.session.user ? 'id=$usrId' : 'FALSE';
+  let sqlUser = `SELECT * FROM tbl_users WHERE ${uIdSel}`;
 
   BBPromise.resolve([
     dbStore.sequelize.query(sqlData, {
@@ -298,7 +299,7 @@ router.get('/addgoods', function (req, res, next) {
     dbStore.sequelize.query(sqlUser, {
       type: dbStore.sequelize.QueryTypes.SELECT,
       bind: {
-        id: id
+        usrId: usrId
       }
     })
   ]).spread(function (sqlItems, sqlUserRes) {
@@ -315,6 +316,7 @@ router.get('/addgoods', function (req, res, next) {
     let result = [];
     sqlItems.forEach(function (itm, idx) {
       // 标记为收藏
+      itm.bCollected = false;
       if (collectIds[itm.id]) {
         itm.bCollected = true;
       }

@@ -303,10 +303,15 @@ div.good-info {
     border-radius: 6px;
 }
 
+/* TODO */
+.login-username, .login-password{
+
+}
 #form-login span, #form-reg span {
     font-size: 16px;
     color: #454545;
 }
+
 
 #loginForm .form-btn,
 #regForm .form-btn {

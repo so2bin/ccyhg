@@ -143,66 +143,13 @@ $(function () {
  */
 $(function () {
   // 取消收藏按钮切换与事件调用
-  $('.goods-lists').on('click', '.btn_good_collect_active', function (e) {
-    var that = $(this);
-    var id   = $(this).parent('.good-caption').children('.id').html();
-    // 往服务器发送收藏数据
-    $.ajax({
-      url     : '/uncollect?id=' + id,
-      type    : 'GET',
-      dataType: 'json',
-      success : function (res) {
-        if (res.code == 0) {
-          // 成功
-          that.fadeOut(200);
-          that.parent().find('.btn_good_collect_inactive').fadeIn(0);
-        } else if (res.code == 100) {
-          // 没有登陆
-          $('#dialog-center').show();
-        } else {
-          $('#dialog-aftercopy').css('color', 'red').html('取消失败').dialog('open');
-          setTimeout(function () {
-            $('#dialog-aftercopy').dialog('close');
-          }, 1000);
-        }
-      },
-      error   : function () {
-
-      }
-    });
-  });
+  $('.goods-lists').on('click', '.btn_good_collect_active', uncollect_func);
 
   // 收藏
-  $('.goods-lists').on('click', '.btn_good_collect_inactive', function (e) {
-    var that = $(this);
-    var id   = $(this).parent('.good-caption').children('.id').html();
-    $.ajax({
-      url     : '/collect?id=' + id,
-      type    : 'GET',
-      dataType: 'json',
-      success : function (res) {
-        if (res.code == 0) {
-          // 成功
-          that.fadeOut(0);
-          that.parent().find('.btn_good_collect_active').fadeIn(300);
-        } else if (res.code == 100) {
-          // 没有登陆
-          $('#dialog-center').show();
-        }
-        else {
-          $('#dialog-aftercopy').css('color', 'red').html('收藏失败').dialog('open');
-          setTimeout(function () {
-            $('#dialog-aftercopy').dialog('close');
-          }, 1000)
-        }
-      },
-      error   : function () {
+  $('.goods-lists').on('click', '.btn_good_collect_inactive', collect_func);
 
-      }
-    });
-  });
-
-});
+})
+;
 
 // 提示登陆对话框
 $(function () {
@@ -492,7 +439,63 @@ $(function () {
 });
 
 
+var collect_func = function (e) {
+  var that = $(this);
+  var id   = $(this).parent('.good-caption').children('.id').html();
+  $.ajax({
+    url     : '/collect?id=' + id,
+    type    : 'GET',
+    dataType: 'json',
+    success : function (res) {
+      if (res.code == 0) {
+        // 成功
+        that.fadeOut(0);
+        that.parent().find('.btn_good_collect_active').fadeIn(300);
+      } else if (res.code == 100) {
+        // 没有登陆
+        $('#dialog-center').show();
+      }
+      else {
+        $('#dialog-aftercopy').css('color', 'red').html('收藏失败').dialog('open');
+        setTimeout(function () {
+          $('#dialog-aftercopy').dialog('close');
+        }, 1000)
+      }
+    },
+    error   : function () {
 
+    }
+  })
+};
+
+var uncollect_func = function (e) {
+  var that = $(this);
+  var id   = $(this).parent('.good-caption').children('.id').html();
+  // 往服务器发送收藏数据
+  $.ajax({
+    url     : '/uncollect?id=' + id,
+    type    : 'GET',
+    dataType: 'json',
+    success : function (res) {
+      if (res.code == 0) {
+        // 成功
+        that.fadeOut(200);
+        that.parent().find('.btn_good_collect_inactive').fadeIn(0);
+      } else if (res.code == 100) {
+        // 没有登陆
+        $('#dialog-center').show();
+      } else {
+        $('#dialog-aftercopy').css('color', 'red').html('取消失败').dialog('open');
+        setTimeout(function () {
+          $('#dialog-aftercopy').dialog('close');
+        }, 1000);
+      }
+    },
+    error   : function () {
+
+    }
+  });
+};
 
 
 

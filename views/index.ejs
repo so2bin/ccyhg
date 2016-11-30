@@ -195,7 +195,6 @@
                             dataType   : 'json',
                             contentType: 'charset=utf-8',
                             success    : function (res, status, xhr) {
-                                console.log(res.msg.items.length, window.$info.pageInfo.page)
                                 if (res.code != 0 || res.msg.items.length == 0) {
                                     // TODO 显示到底了
                                     $('#user-res-tips').css('display', 'block').html('已经被掏空啦^-^')
@@ -222,47 +221,51 @@
         function addLoadingGoods(msg) {
             $.each(msg.items, function (idx, good) {
                 var regGood = collectgood;
-                regGood     = regGood.replace(/good_id/, good.id);
-                regGood     = regGood.replace(/good_pic1/, good.pic1);
-                regGood     = regGood.replace(/good_title/, good.title);
-                regGood     = regGood.replace(/good_realprice/, good.realprice);
-                regGood     = regGood.replace(/good_coupon/, good.coupon);
-                regGood     = regGood.replace(/good_collect/, good.collect);
+                regGood     = regGood.replace(/good_id/, good.id)
+                .replace(/good_pic1/, good.pic1)
+                .replace(/good_title/, good.title)
+                .replace(/good_realprice/, good.realprice)
+                .replace(/good_coupon/, good.coupon)
+                .replace(/good_collect/, good.collect);
                 var curGood = $(regGood);
+                if(good.bCollected){
+                    curGood.find('.btn_good_collect_active').css('display','block');
+                    curGood.find('.btn_good_collect_inactive').css('display','none');
+                }
                 curGood.insertBefore($('#pullUp'));
                 // 监听事件
-                $(curGood.find('.btn_good_collect_active_user').get(0)).click(function () {
-                    var that = $(this).parent('.good-caption').children('.id');
-                    var id   = that.html();
-                    // 往服务器发送收藏数据
-                    $.ajax({
-                        url     : '/uncollect?id=' + id,
-                        type    : 'GET',
-                        dataType: 'json',
-                        success : function (res) {
-                            if (res.code == 0) {
-                                // 成功 从当前界面删除该元素
-                                curGood.remove();
-                                // 在商品界面中取消收藏
-                                var idDiv = $('#goods-container .goods-lists .id:contains(' + id + ')').parent('.good-caption');
-                                idDiv.children('.btn_good_collect_active').css('display', 'none');
-                                idDiv.children('.btn_good_collect_inactive').css('display', 'block');
-                            } else if (res.code == 100) {
-                                // 没有登陆
-                                $('#dialog-center').show();
-                            } else {
-                                $('#dialog-aftercopy').css('color', 'red').html('取消失败').dialog('open');
-                                setTimeout(function () {
-                                    $('#dialog-aftercopy').dialog('close');
-                                }, 1000);
-                            }
-                        },
-                        error   : function () {
-
-                        }
-                    });
-
-                });
+//                $(curGood.find('.btn_good_collect_active_user').get(0)).click(function () {
+//                    var that = $(this).parent('.good-caption').children('.id');
+//                    var id   = that.html();
+//                    // 往服务器发送收藏数据
+//                    $.ajax({
+//                        url     : '/uncollect?id=' + id,
+//                        type    : 'GET',
+//                        dataType: 'json',
+//                        success : function (res) {
+//                            if (res.code == 0) {
+//                                // 成功 从当前界面删除该元素
+//                                curGood.remove();
+//                                // 在商品界面中取消收藏
+//                                var idDiv = $('#goods-container .goods-lists .id:contains(' + id + ')').parent('.good-caption');
+//                                idDiv.children('.btn_good_collect_active').css('display', 'none');
+//                                idDiv.children('.btn_good_collect_inactive').css('display', 'block');
+//                            } else if (res.code == 100) {
+//                                // 没有登陆
+//                                $('#dialog-center').show();
+//                            } else {
+//                                $('#dialog-aftercopy').css('color', 'red').html('取消失败').dialog('open');
+//                                setTimeout(function () {
+//                                    $('#dialog-aftercopy').dialog('close');
+//                                }, 1000);
+//                            }
+//                        },
+//                        error   : function () {
+//
+//                        }
+//                    });
+//
+//                });
             })
         }
 
@@ -287,7 +290,8 @@
             '        收藏数:&nbsp;',
             '        <span>good_collect</span>',
             '      </div>',
-            '      <div class="btn_good_collect_active_user heart-active"></div>',
+            '      <div class="btn_good_collect_active heart-active" style="display: none"></div>',
+            '      <div class="btn_good_collect_inactive heart-inactive"></div>',
             '      </div>',
             '  </div>'
         ].join("");
