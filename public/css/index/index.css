@@ -274,10 +274,11 @@ div.good-info {
 #loginForm, #regForm {
     position: relative;
     text-align: center;
+    top:30px;
 }
 
-#loginForm h2, #regForm h2 {
-    margin: 20px 0 20px 0;
+#loginForm h1, #regForm h1 {
+    margin: 20px 0 30px 0;
     color: #454545;
 }
 
@@ -285,16 +286,33 @@ div.good-info {
     display: inline-block;
 }
 
+/* 用户名与密码格式 */
+.login-username, .login-password{
+    height: 52px;
+    width: 300px;
+}
+.login-username span, .login-password span {
+    font-size: 18px;
+    color: #454545;
+    float: left;
+    height: 52px;
+    line-height: 52px;
+}
+
 /* 输入框 */
-#form-login input:not([type=button]),
-#form-reg input:not([type=button]) {
-    line-height: 26px;
-    margin: 5px 10px;
+.login-input,
+.reg-input {
+    line-height: 52px;
+    margin: 8px 0px;
     border-radius: 6px;
     -moz-border-radius: 6px;
     -webkit-border-radius: 6px;
     background-color: rgb(255, 251, 255);
     border: 1px solid rgb(255, 251, 240);
+    width: 210px;
+    height: 32px;
+    font-size: 16px;
+    float: right;
 }
 
 #form-login input:focus,
@@ -303,29 +321,16 @@ div.good-info {
     border-radius: 6px;
 }
 
-/* TODO */
-.login-username, .login-password{
-
-}
-#form-login span, #form-reg span {
-    font-size: 16px;
-    color: #454545;
-}
-
-
-#loginForm .form-btn,
-#regForm .form-btn {
-    margin: 16px;
-}
-
+/* 提交按钮格式 */
 #form-login #btn-login-submit,
 #form-reg #btn-reg-submit {
     width: 32px;
-    height: 14px;
-    line-height: 14px;
+    height: 16px;
+    line-height: 16px;
     border-radius: 4px;
     font-family: '黑体';
     margin-right: 20px;
+    font-size: 16px;
 }
 
 #form-login .login-reg,
@@ -334,11 +339,26 @@ div.good-info {
     color: dodgerblue;
 }
 
-#regForm .sex {
-    margin-top: 10px;
+.form-btn{
+    margin-top: 16px;
 }
 
-/***************************************************/
+#regForm .sex {
+    margin-top: 10px;
+    font-size:16px;
+}
+#regForm .sex input[type="radio"] {
+    width: 15px;
+    height: 15px;
+}
+#regForm .sex div{
+    display: inline-block;
+    width: 40px;
+    height: 15px;
+}
+
+
+    /***************************************************/
 /* 收藏按钮没有 */
 #dialog-center {
     position: absolute;
